@@ -1,8 +1,8 @@
 COMPILER = g++
 OPTIONS = -Wall -Wno-long-long -pedantic
-INCLUDES = -I.. -I/usr/local/include/tcl8.4 -I/usr/local/include/tk8.4 -I/usr/X11R6/include -I/usr/local/include/boost_1_33_0
+INCLUDES = -I.. -I/usr/include/tcl8.6 -I/usr/include/tk8.6 -I/usr/X11R6/include -I/usr/local/include/boost_1_33_0
 LIBDIRS = -L/usr/local/lib
-LIBS = -ltcl84 -ltk84
+LIBS = -ltcl8.6 -ltk8.6
 
 ALL_OPTIONS = ${OPTIONS} ${INCLUDES} ${LIBDIRS} ${LIBS}
 
