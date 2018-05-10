@@ -15,11 +15,10 @@
 #include <ostream>
 #include <iostream>
 #include <sstream>
-#include <boost/scoped_ptr.hpp>
 
 using namespace Tk;
 using namespace Tk::details;
-using namespace boost;
+using boost::lexical_cast;
 using namespace std;
 
 namespace { // anonymous
