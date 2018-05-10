@@ -1,8 +1,8 @@
 COMPILER = g++ -std=c++11 -Wno-parentheses
 CXXFLAGS = -Wall -Wno-long-long -pedantic
 TESTFLAGS = -DCPPTK_DUMP_COMMANDS -DCPPTK_DONT_EVALUATE
-INCLUDES = -I/usr/include/tcl8.6 -I/usr/include/tk8.6 -I/usr/X11R6/include -I/usr/local/include/boost_1_33_0
-LIBDIRS = -L/usr/local/lib
+INCLUDES = -I/usr/include/tcl8.6 -I/usr/include/tk8.6
+LIBDIRS =
 LIBS = -ltcl8.6 -ltk8.6
 
 OTHERFILES = ../cpptk.h ../cpptkoptions.x ../cpptkconstants.x \

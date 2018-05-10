@@ -1,7 +1,7 @@
 COMPILER = g++ -std=c++11 -Wno-parentheses
 OPTIONS = -Wall -Wno-long-long -pedantic
-INCLUDES = -I.. -I/usr/include/tcl8.6 -I/usr/include/tk8.6 -I/usr/X11R6/include -I/usr/local/include/boost_1_33_0
-LIBDIRS = -L/usr/local/lib
+INCLUDES = -I.. -I/usr/include/tcl8.6 -I/usr/include/tk8.6
+LIBDIRS =
 LIBS = -ltcl8.6 -ltk8.6
 
 ALL_OPTIONS = ${OPTIONS} ${INCLUDES} ${LIBDIRS} ${LIBS}
