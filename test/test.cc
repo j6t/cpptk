@@ -247,7 +247,7 @@ void commandsTest()
      place(".b") -bordermode(inside) -x(10) -y(30);
      CHECK("place .b -bordermode inside -x 10 -y 30");
      place(configure, ".b") -relx(5) -rely(6) -relheight(0.5) -relwidth(0.6);
-     CHECK("place configure .b -relx 5 -rely 6 -relheight 0.5 -relwidth 0.6");
+     CHECK("place configure .b -relx 5 -rely 6 -relheight 0.5 -relwidth 0.59999999999999998");
      place(forget, ".b");
      CHECK("place forget .b");
      place(info, ".b");
@@ -285,7 +285,7 @@ void commandsTest()
           -from(0) -to(10) -increment(0.1) -values("a b c d") -wrap(true);
      CHECK("spinbox .sp -buttonbackground blue -buttoncursor mycursor"
           " -buttondownrelief sunken -buttonuprelief raised -format %0.3f"
-          " -from 0 -to 10 -increment 0.1 -values \"a b c d\" -wrap 1");
+          " -from 0 -to 10 -increment 0.10000000000000001 -values \"a b c d\" -wrap 1");
      
      textw(".t") -autoseparators(true) -maxundo(100) -spacing1(5) -spacing2(6)
           -spacing3(7) -tabs("2c left 4c 6c center") -undo(true)
@@ -918,7 +918,7 @@ void widgetCommandsTest()
      CHECK(".c move item 10 20");
      
      ".sb" << moveto(0.2);
-     CHECK(".sb moveto 0.2");
+     CHECK(".sb moveto 0.20000000000000001");
      
      ".lb" << nearest(25);
      CHECK(".lb nearest 25");
@@ -984,7 +984,7 @@ void widgetCommandsTest()
      CHECK(".pw sash place 5 50 60");
      
      ".c" << scale("item", 10, 20, 1.5, 1.6);
-     CHECK(".c scale item 10 20 1.5 1.6");
+     CHECK(".c scale item 10 20 1.5 1.6000000000000001");
      
      ".e" << scan(mark, 10);
      CHECK(".e scan mark 10");
@@ -1062,7 +1062,7 @@ void widgetCommandsTest()
      ".s" << set(150);
      CHECK(".s set 150");
      ".sb" << set(0.2, 0.4);
-     CHECK(".sb set 0.2 0.4");
+     CHECK(".sb set 0.20000000000000001 0.40000000000000002");
      ".sp" << set();
      CHECK(".sp set");
      
