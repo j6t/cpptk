@@ -149,7 +149,7 @@ int main(int, char *argv[])
           // bind the mouse click so that it is possible
           // to interact with the cells
           
-          bind(".c", "<Button-1>", click, event_x, event_y);
+          Tk::bind(".c", "<Button-1>", click, event_x, event_y);
           
           wm(resizable, ".", false, false);
           

@@ -21,8 +21,8 @@ void openFile()
      
      // put the file content into the text widget
      
-     ".t" << deletetext(txt(1,0), end);
-     ".t" << insert(end, fileContent);
+     ".t" << deletetext(txt(1,0), Tk::end);
+     ".t" << insert(Tk::end, fileContent);
 }
 
 // this procedure will support the "File->Save" menu command
@@ -34,7 +34,7 @@ void saveFile()
      
      // get the content from the text widget
      
-     string content(".t" << get(txt(1,0), end));
+     string content(".t" << Tk::get(txt(1,0), Tk::end));
      
      // write the file
      
