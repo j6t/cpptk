@@ -1,4 +1,4 @@
-COMPILER = g++ -std=c++11 -Wno-parentheses
+COMPILER = g++-6 -std=c++14 -Wno-parentheses
 CXXFLAGS = -Wall -Wno-long-long -pedantic
 TESTFLAGS = -DCPPTK_DUMP_COMMANDS -DCPPTK_DONT_EVALUATE
 INCLUDES = -I/usr/include/tcl8.6 -I/usr/include/tk8.6

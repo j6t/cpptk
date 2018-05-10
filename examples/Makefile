@@ -1,4 +1,4 @@
-COMPILER = g++ -std=c++11 -Wno-parentheses
+COMPILER = g++-6 -std=c++14 -Wno-parentheses
 OPTIONS = -Wall -Wno-long-long -pedantic
 INCLUDES = -I.. -I/usr/include/tcl8.6 -I/usr/include/tk8.6
 LIBDIRS =
