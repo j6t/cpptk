@@ -231,7 +231,7 @@ details::Expr wmprotocol(std::string const &w,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
 
      std::string str("wm protocol ");
      str += w;          str += " ";
@@ -865,7 +865,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
 
      std::string str("tag ");
      str += option;     str += " ";
@@ -882,7 +882,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback1<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType>(f)));
      
      std::string str("tag ");
@@ -901,7 +901,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback2<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType>(f)));
      
@@ -923,7 +923,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback3<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType>(f)));
@@ -948,7 +948,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback4<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType,
@@ -975,7 +975,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback5<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType,
@@ -1004,7 +1004,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback6<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType,
@@ -1037,7 +1037,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback7<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType,
@@ -1072,7 +1072,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback8<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType,
@@ -1109,7 +1109,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback9<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType,
@@ -1149,7 +1149,7 @@ details::Expr tag(std::string const &option, std::string const &name,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback10<Functor,
+               new details::Callback<Functor,
                     typename EventAttr1::attrType,
                     typename EventAttr2::attrType,
                     typename EventAttr3::attrType,
@@ -1259,7 +1259,7 @@ template <class Functor> details::Expr invalidcommand(Functor f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
      
      std::string str(" -invalidcommand ");
      str += newCmd;
@@ -1276,7 +1276,7 @@ template <class Functor> details::Expr postcommand(Functor f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
      
      std::string str(" -postcommand ");
      str += newCmd;
@@ -1338,7 +1338,7 @@ template <class Functor> details::Expr tearoffcommand(Functor f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
      
      std::string str(" -tearoffcommand ");
      str += newCmd;
@@ -1365,7 +1365,7 @@ details::Expr validatecommand(Functor f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
      
      std::string str(" -validatecommand ");
      str += newCmd;
@@ -1377,7 +1377,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback1<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType>(f)));
      
      std::string str(" -validatecommand { ");
@@ -1392,7 +1392,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback2<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType,
                     typename ValidateAttr2::validType>(f)));
      
@@ -1410,7 +1410,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback3<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType,
                     typename ValidateAttr2::validType,
                     typename ValidateAttr3::validType>(f)));
@@ -1431,7 +1431,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback4<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType,
                     typename ValidateAttr2::validType,
                     typename ValidateAttr3::validType,
@@ -1454,7 +1454,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback5<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType,
                     typename ValidateAttr2::validType,
                     typename ValidateAttr3::validType,
@@ -1481,7 +1481,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback6<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType,
                     typename ValidateAttr2::validType,
                     typename ValidateAttr3::validType,
@@ -1510,7 +1510,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback7<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType,
                     typename ValidateAttr2::validType,
                     typename ValidateAttr3::validType,
@@ -1542,7 +1542,7 @@ details::Expr validatecommand(Functor f, ValidateAttr1 const &va1,
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback8<Functor,
+               new details::Callback<Functor,
                     typename ValidateAttr1::validType,
                     typename ValidateAttr2::validType,
                     typename ValidateAttr3::validType,
@@ -1628,7 +1628,7 @@ details::Expr afteridle(Functor f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
 
      std::string str("after idle ");
      str += newCmd;
@@ -1660,7 +1660,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback0<Functor>(f)));
+                    new Callback<Functor>(f)));
 
           std::string str("bind ");
           str += name;       str += " ";
@@ -1676,7 +1676,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback1<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType>(f)));
      
           std::string str("bind ");
@@ -1694,7 +1694,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback2<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType>(f)));
      
@@ -1716,7 +1716,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback3<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType>(f)));
@@ -1740,7 +1740,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback4<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType,
@@ -1766,7 +1766,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback5<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType,
@@ -1796,7 +1796,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback6<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType,
@@ -1828,7 +1828,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback7<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType,
@@ -1862,7 +1862,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback8<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType,
@@ -1900,7 +1900,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback9<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType,
@@ -1940,7 +1940,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback10<Functor,
+                    new Callback<Functor,
                          typename EventAttr1::attrType,
                          typename EventAttr2::attrType,
                          typename EventAttr3::attrType,
@@ -2245,7 +2245,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback0<Functor>(f)));
+                    new Callback<Functor>(f)));
      
           std::string str(" -command ");
           str += newCmd;
@@ -2342,7 +2342,7 @@ public:
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback0<Functor>(f)));
+                    new Callback<Functor>(f)));
 
           std::string str("after ");
           str += toString(t); str += " ";

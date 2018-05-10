@@ -71,77 +71,10 @@ struct CallbackTraits
      typedef typename Functor::result_type result_type;
 };
 
-// partial specializations for pointers to functions
+// partial specialization for pointer to function
 
-template <typename R>
-struct CallbackTraits<R (*)()>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1>
-struct CallbackTraits<R (*)(T1)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2>
-struct CallbackTraits<R (*)(T1, T2)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3>
-struct CallbackTraits<R (*)(T1, T2, T3)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3, typename T4>
-struct CallbackTraits<R (*)(T1, T2, T3, T4)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3, typename T4,
-     typename T5>
-struct CallbackTraits<R (*)(T1, T2, T3, T4, T5)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6>
-struct CallbackTraits<R (*)(T1, T2, T3, T4, T5, T6)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7>
-struct CallbackTraits<R (*)(T1, T2, T3, T4, T5, T6, T7)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8>
-struct CallbackTraits<R (*)(T1, T2, T3, T4, T5, T6, T7, T8)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8, typename T9>
-struct CallbackTraits<R (*)(T1, T2, T3, T4, T5, T6, T7, T8, T9)>
-{
-     typedef R result_type;
-};
-
-template <typename R, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8, typename T9,
-     typename T10>
-struct CallbackTraits<R (*)(T1, T2, T3, T4, T5, T6, T7, T8, T9, T10)>
+template <typename R, class... T>
+struct CallbackTraits<R (*)(T...)>
 {
      typedef R result_type;
 };
@@ -292,517 +225,50 @@ void setResult(std::string const &s);
 
 // The Dispatch class is used to execute the callback functor
 // and to capture their results.
-// The DispatchN classes can capture results of functors
-// with up to 10 parameters
 
-template <typename R, class Functor>
-struct Dispatch0
+template <typename R, class Functor, class... T>
+struct Dispatch
 {
-     static void doDispatch(Functor f)
+     static void doDispatch(Functor f, T const &... t)
      {
-          R result = f();
+          R result = f(t...);
           setResult(result);
      }
 };
 
 // partial specialization for functors that return nothing
-template <class Functor>
-struct Dispatch0<void, Functor>
+template <class Functor, class... T>
+struct Dispatch<void, Functor, T...>
 {
-     static void doDispatch(Functor f)
+     static void doDispatch(Functor f, T const &... t)
      {
-          f();
+          f(t...);
      }
 };
 
-template <typename R, class Functor, typename T1>
-struct Dispatch1
-{
-     static void doDispatch(Functor f, T1 const &t1)
-     {
-          R result = f(t1);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1>
-struct Dispatch1<void, Functor, T1>
-{
-     static void doDispatch(Functor f, T1 const &t1)
-     {
-          f(t1);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2>
-struct Dispatch2
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2)
-     {
-          R result = f(t1, t2);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2>
-struct Dispatch2<void, Functor, T1, T2>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2)
-     {
-          f(t1, t2);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3>
-struct Dispatch3
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3)
-     {
-          R result = f(t1, t2, t3);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3>
-struct Dispatch3<void, Functor, T1, T2, T3>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3)
-     {
-          f(t1, t2, t3);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3,
-     typename T4>
-struct Dispatch4
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4)
-     {
-          R result = f(t1, t2, t3, t4);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3, typename T4>
-struct Dispatch4<void, Functor, T1, T2, T3, T4>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4)
-     {
-          f(t1, t2, t3, t4);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3,
-     typename T4, typename T5>
-struct Dispatch5
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5)
-     {
-          R result = f(t1, t2, t3, t4, t5);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5>
-struct Dispatch5<void, Functor, T1, T2, T3, T4, T5>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5)
-     {
-          f(t1, t2, t3, t4, t5);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3,
-     typename T4, typename T5, typename T6>
-struct Dispatch6
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6)
-     {
-          R result = f(t1, t2, t3, t4, t5, t6);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6>
-struct Dispatch6<void, Functor, T1, T2, T3, T4, T5, T6>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6)
-     {
-          f(t1, t2, t3, t4, t5, t6);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3,
-     typename T4, typename T5, typename T6, typename T7>
-struct Dispatch7
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7)
-     {
-          R result = f(t1, t2, t3, t4, t5, t6, t7);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7>
-struct Dispatch7<void, Functor, T1, T2, T3, T4, T5, T6, T7>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7)
-     {
-          f(t1, t2, t3, t4, t5, t6, t7);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3,
-     typename T4, typename T5, typename T6, typename T7, typename T8>
-struct Dispatch8
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7, T8 const &t8)
-     {
-          R result = f(t1, t2, t3, t4, t5, t6, t7, t8);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8>
-struct Dispatch8<void, Functor, T1, T2, T3, T4, T5, T6, T7, T8>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7, T8 const &t8)
-     {
-          f(t1, t2, t3, t4, t5, t6, t7, t8);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3,
-     typename T4, typename T5, typename T6, typename T7, typename T8,
-     typename T9>
-struct Dispatch9
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7, T8 const &t8, T9 const &t9)
-     {
-          R result = f(t1, t2, t3, t4, t5, t6, t7, t8, t9);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8, typename T9>
-struct Dispatch9<void, Functor, T1, T2, T3, T4, T5, T6, T7, T8, T9>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7, T8 const &t8, T9 const &t9)
-     {
-          f(t1, t2, t3, t4, t5, t6, t7, t8, t9);
-     }
-};
-
-template <typename R, class Functor, typename T1, typename T2, typename T3,
-     typename T4, typename T5, typename T6, typename T7, typename T8,
-     typename T9, typename T10>
-struct Dispatch10
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7, T8 const &t8, T9 const &t9, T10 const &t10)
-     {
-          R result = f(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10);
-          setResult(result);
-     }
-};
-
-// partial specialization for functors that return nothing
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8, typename T9,
-     typename T10>
-struct Dispatch10<void, Functor, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
-{
-     static void doDispatch(Functor f, T1 const &t1, T2 const &t2,
-          T3 const &t3, T4 const &t4, T5 const &t5, T6 const &t6,
-          T7 const &t7, T8 const &t8, T9 const &t9, T10 const &t10)
-     {
-          f(t1, t2, t3, t4, t5, t6, t7, t8, t9, t10);
-     }
-};
-
-// The Callback is used as an envelope for the actual
+// The Callback class is used as an envelope for the actual
 // callback object
-// The CallbackN classes wrap functors with up to 10 parameters
 
-template <class Functor>
-class Callback0 : public CallbackBase
+template <class Functor, class... T>
+class Callback : public CallbackBase
 {
 public:
-     Callback0(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &)
+     Callback(Functor f) : f_(f) {}
+
+     virtual void invoke(Params const &p)
      {
-          Dispatch0<result_type, Functor>::doDispatch(f_);
+	     doInvoke(p, std::index_sequence_for<T...>{});
      }
 
 private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1>
-class Callback1 : public CallbackBase
-{
-public:
-     Callback1(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
+     template<std::size_t... I>
+     void doInvoke(Params const &p, std::index_sequence<I...>)
      {
-          Dispatch1<result_type, Functor, T1>
-               ::doDispatch(f_, p.template get<T1>(1));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2>
-class Callback2 : public CallbackBase
-{
-public:
-     Callback2(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch2<result_type, Functor, T1, T2>
+          Dispatch<result_type, Functor, T...>
                ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2));
+                    p.template get<T>(I+1)...);
      }
 
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3>
-class Callback3 : public CallbackBase
-{
-public:
-     Callback3(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch3<result_type, Functor, T1, T2, T3>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3, typename T4>
-class Callback4 : public CallbackBase
-{
-public:
-     Callback4(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch4<result_type, Functor, T1, T2, T3, T4>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3),
-                    p.template get<T4>(4));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5>
-class Callback5 : public CallbackBase
-{
-public:
-     Callback5(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch5<result_type, Functor, T1, T2, T3, T4, T5>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3),
-                    p.template get<T4>(4),
-                    p.template get<T5>(5));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6>
-class Callback6 : public CallbackBase
-{
-public:
-     Callback6(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch6<result_type, Functor, T1, T2, T3, T4, T5, T6>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3),
-                    p.template get<T4>(4),
-                    p.template get<T5>(5),
-                    p.template get<T6>(6));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7>
-class Callback7 : public CallbackBase
-{
-public:
-     Callback7(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch7<result_type, Functor, T1, T2, T3, T4, T5, T6, T7>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3),
-                    p.template get<T4>(4),
-                    p.template get<T5>(5),
-                    p.template get<T6>(6),
-                    p.template get<T7>(7));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8>
-class Callback8 : public CallbackBase
-{
-public:
-     Callback8(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch8<result_type, Functor, T1, T2, T3, T4, T5, T6, T7, T8>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3),
-                    p.template get<T4>(4),
-                    p.template get<T5>(5),
-                    p.template get<T6>(6),
-                    p.template get<T7>(7),
-                    p.template get<T8>(8));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8, typename T9>
-class Callback9 : public CallbackBase
-{
-public:
-     Callback9(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch9<result_type, Functor, T1, T2, T3, T4, T5, T6, T7, T8, T9>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3),
-                    p.template get<T4>(4),
-                    p.template get<T5>(5),
-                    p.template get<T6>(6),
-                    p.template get<T7>(7),
-                    p.template get<T8>(8),
-                    p.template get<T9>(9));
-     }
-
-private:
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
-};
-
-template <class Functor, typename T1, typename T2, typename T3, typename T4,
-     typename T5, typename T6, typename T7, typename T8, typename T9,
-     typename T10>
-class Callback10 : public CallbackBase
-{
-public:
-     Callback10(Functor f) : f_(f) {}
-     
-     virtual void invoke(Params const &p)
-     {
-          Dispatch10<result_type, Functor,
-               T1, T2, T3, T4, T5, T6, T7, T8, T9, T10>
-               ::doDispatch(f_,
-                    p.template get<T1>(1),
-                    p.template get<T2>(2),
-                    p.template get<T3>(3),
-                    p.template get<T4>(4),
-                    p.template get<T5>(5),
-                    p.template get<T6>(6),
-                    p.template get<T7>(7),
-                    p.template get<T8>(8),
-                    p.template get<T9>(9),
-                    p.template get<T10>(10));
-     }
-
-private:
      typedef typename CallbackTraits<Functor>::result_type result_type;
      Functor f_;
 };
@@ -908,7 +374,7 @@ template <class Functor> std::string callback(Functor f)
 {
      return details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback0<Functor>(f)));
+               new details::Callback<Functor>(f)));
 }
 
 // for deleting callbacks
