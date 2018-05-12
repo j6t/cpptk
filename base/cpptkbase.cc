@@ -69,9 +69,11 @@ Tcl_Interp * getInterp()
      return interp.get();
 }
 
+#ifdef CPPTK_DUMP_COMMANDS
 // output stream for dumping Tk commands
 // (useful for automated testing)
-ostream *dumpstream = &cerr;
+static ostream *dumpstream = &cerr;
+#endif // CPPTK_DUMP_COMMANDS
 
 void do_eval(string const &str)
 {
@@ -720,5 +722,7 @@ void Tk::runEventLoop()
 
 void Tk::setDumpStream(ostream &os)
 {
+#ifdef CPPTK_DUMP_COMMANDS
 	dumpstream = &os;
+#endif // CPPTK_DUMP_COMMANDS
 }
