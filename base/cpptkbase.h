@@ -132,7 +132,6 @@ public:
      Expr(std::string const &str, std::string const &postfix);
      Expr(std::shared_ptr<Command> const &cmd) : cmd_(cmd) {}
      
-     std::shared_ptr<Command> getCmd() const { return cmd_; }
      std::string getValue() const;
      
      operator std::string() const;
@@ -182,6 +181,9 @@ public:
 private:
      std::string str_;
      std::shared_ptr<Command> cmd_;
+
+     friend Expr operator-(Expr const &lhs, Expr const &rhs);
+     friend Expr operator<<(std::string const &w, Expr const &rhs);
 };
 
 // The Params is used to encapsulate the list of parameters
@@ -366,8 +368,7 @@ public:
 
 // basic operations for Tk expressions
 
-details::Expr operator-(details::Expr const &lhs, details::Expr const &rhs);
-details::Expr operator<<(std::string const &w, details::Expr const &rhs);
+// operator- and operator<< are declared as friend functions of details::Expr
 
 // for defining callbacks
 template <class Functor> std::string callback(Functor f)

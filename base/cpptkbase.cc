@@ -662,24 +662,30 @@ string details::quote(string const &s)
      return ret;
 }
 
+namespace Tk {
+namespace details {
+
 // basic Tk expression operations
 
-Expr Tk::operator-(Expr const &lhs, Expr const &rhs)
+Expr operator-(Expr const &lhs, Expr const &rhs)
 {
-     shared_ptr<Command> cmd(lhs.getCmd());
+     auto cmd = lhs.cmd_;
      cmd->append(rhs.getValue());
      
      return Expr(cmd);
 }
 
-Expr Tk::operator<<(string const &w, Expr const &rhs)
+Expr operator<<(string const &w, Expr const &rhs)
 {
-     shared_ptr<Command> cmd(rhs.getCmd());
+     auto cmd = rhs.cmd_;
      cmd->prepend(" ");
      cmd->prepend(w);
 
      return Expr(cmd);
 }
+
+} // namespace details
+} // namespace Tk
 
 // helper functions
 
