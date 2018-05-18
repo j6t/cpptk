@@ -36,15 +36,7 @@ public:
      explicit TkError(std::string const &msg)
           : std::runtime_error(msg)
      {
-          inTkError = true;
      }
-
-     ~TkError() throw()
-     {
-          inTkError = false;
-     }
-
-     static bool inTkError;
 };
 
 // for functions returning point and box (or windows) coordinates

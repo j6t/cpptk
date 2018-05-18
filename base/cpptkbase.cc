@@ -179,9 +179,6 @@ void linkTcltoCpp()
 } // namespace // anonymous
 
 
-// global flag for avoiding multiple-error problem
-bool Tk::TkError::inTkError = false;
-
 
 // generic callback handler
 
@@ -483,7 +480,7 @@ details::Expr::Expr(string const &str, bool starter)
 
 details::Expr::~Expr() noexcept(false)
 {
-     if (!TkError::inTkError && cmd_)
+     if (!uncaught_exception() && cmd_)
      {
           invokeOnce();
      }
@@ -586,7 +583,7 @@ details::ExprWithPostfix::ExprWithPostfix(std::string const &str, std::string co
 
 details::ExprWithPostfix::~ExprWithPostfix() noexcept(false)
 {
-     if (!TkError::inTkError && cmd_)
+     if (!uncaught_exception() && cmd_)
      {
           invokeOnce();
      }
