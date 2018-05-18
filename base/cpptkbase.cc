@@ -667,21 +667,19 @@ namespace details {
 
 // basic Tk expression operations
 
-Expr operator-(Expr const &lhs, Expr const &rhs)
+Expr&& operator-(Expr &&lhs, Expr &&rhs)
 {
-     auto cmd = lhs.cmd_;
-     cmd->append(rhs.getValue());
+     lhs.cmd_->append(rhs.getValue());
      
-     return Expr(cmd);
+     return move(lhs);
 }
 
-Expr operator<<(string const &w, Expr const &rhs)
+Expr&& operator<<(string const &w, Expr &&rhs)
 {
-     auto cmd = rhs.cmd_;
-     cmd->prepend(" ");
-     cmd->prepend(w);
+     rhs.cmd_->prepend(" ");
+     rhs.cmd_->prepend(w);
 
-     return Expr(cmd);
+     return move(rhs);
 }
 
 } // namespace details

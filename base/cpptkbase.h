@@ -130,7 +130,6 @@ class Expr
 public:
      explicit Expr(std::string const &str, bool starter = true);
      Expr(std::string const &str, std::string const &postfix);
-     Expr(std::shared_ptr<Command> const &cmd) : cmd_(cmd) {}
      
      std::string getValue() const;
      
@@ -182,8 +181,8 @@ private:
      std::string str_;
      std::shared_ptr<Command> cmd_;
 
-     friend Expr operator-(Expr const &lhs, Expr const &rhs);
-     friend Expr operator<<(std::string const &w, Expr const &rhs);
+     friend Expr&& operator-(Expr &&lhs, Expr &&rhs);
+     friend Expr&& operator<<(std::string const &w, Expr &&rhs);
 };
 
 // The Params is used to encapsulate the list of parameters
