@@ -58,14 +58,14 @@ Expr Tk::clipboard(string const &option)
      return Expr(str);
 }
 
-Expr Tk::clipboard(string const &option, string const &data)
+ExprWithPostfix Tk::clipboard(string const &option, string const &data)
 {
      string str("clipboard ");
      str += option;
      string postfix(" -- \"");
      postfix += quote(data);
      postfix += "\"";
-     return Expr(str, postfix);
+     return ExprWithPostfix(str, postfix);
 }
 
 Expr Tk::destroy(string const &name)
@@ -377,13 +377,13 @@ Expr Tk::tkwait(string const &option, string const &w)
      return Expr(str);
 }
 
-Expr Tk::winfo(string const &option, string const &w)
+ExprWithPostfix Tk::winfo(string const &option, string const &w)
 {
      string str("winfo ");
      str += option;
      string postfix(" ");
      postfix += w;
-     return Expr(str, postfix);
+     return ExprWithPostfix(str, postfix);
 }
 
 Expr Tk::wm(string const &option, string const &w)
@@ -534,7 +534,7 @@ Expr Tk::dtag(string const &tag, string const &todel)
      }
 }
 
-Expr Tk::dump(string const &indx1, string const &indx2)
+ExprWithPostfix Tk::dump(string const &indx1, string const &indx2)
 {
      string str("dump");
      string postfix(" ");
@@ -544,7 +544,7 @@ Expr Tk::dump(string const &indx1, string const &indx2)
           postfix += " ";
           postfix += indx2;
      }
-     return Expr("dump", postfix);
+     return ExprWithPostfix("dump", postfix);
 }
 
 Expr Tk::edit(string const &option)
@@ -665,7 +665,7 @@ Expr Tk::sash(string const &option, int index)
      return Expr(str);
 }
 
-Expr Tk::search(string const &pattern,
+ExprWithPostfix Tk::search(string const &pattern,
      string const &indx1, string const &indx2)
 {
      string str("search \"");
@@ -674,11 +674,11 @@ Expr Tk::search(string const &pattern,
      postfix += indx1;
      if (indx2.empty())
      {
-          return Expr(str, postfix);
+          return ExprWithPostfix(str, postfix);
      }
      postfix += " ";
      postfix += indx2;
-     return Expr(str, postfix);
+     return ExprWithPostfix(str, postfix);
 }
 
 Expr Tk::select()

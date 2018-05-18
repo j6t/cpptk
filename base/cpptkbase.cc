@@ -450,8 +450,8 @@ string details::getResultElem<string>(int indx)
      return Tcl_GetString(obj);
 }
 
-details::Command::Command(std::string const &str, std::string const &postfix)
-     : invoked_(false), str_(str), postfix_(postfix)
+details::Command::Command(std::string const &str)
+     : invoked_(false), str_(str)
 {
 }
 
@@ -470,7 +470,6 @@ void details::Command::invokeOnce() const
           invoked_ = true;
           
           string cmd(str_);
-          cmd += postfix_;
           
           do_eval(cmd);
      }
@@ -486,11 +485,6 @@ details::Expr::Expr(string const &str, bool starter)
      {
           str_ = str;
      }
-}
-
-details::Expr::Expr(string const &str, string const &postfix)
-{
-     cmd_.reset(new Command(str, postfix));
 }
 
 string details::Expr::getValue() const
@@ -582,6 +576,27 @@ Tk::Box details::ResultBase::toBox() const
      return Box(x1, y1, x2, y2);
 }
 
+details::ExprWithPostfix::ExprWithPostfix(std::string const &str, std::string const &postfix) :
+     Result(shared_ptr<Command>(new Command(str))),
+     postfix_(postfix)
+{
+}
+
+details::ExprWithPostfix::~ExprWithPostfix()
+{
+     if (!postfix_.empty())
+          cmd_->append(postfix_);
+}
+
+void details::ExprWithPostfix::invokeOnce()
+{
+     if (!postfix_.empty()) {
+          cmd_->append(postfix_);
+	  postfix_.clear();
+     }
+     cmd_->invokeOnce();
+}
+
 // these two specializations are used to extract parameter
 // with the requested type
 
@@ -651,29 +666,6 @@ string details::quote(string const &s)
      
      return ret;
 }
-
-namespace Tk {
-namespace details {
-
-// basic Tk expression operations
-
-Expr&& operator-(Expr &&lhs, Expr &&rhs)
-{
-     lhs.cmd_->append(rhs.getValue());
-     
-     return move(lhs);
-}
-
-Expr&& operator<<(string const &w, Expr &&rhs)
-{
-     rhs.cmd_->prepend(" ");
-     rhs.cmd_->prepend(w);
-
-     return move(rhs);
-}
-
-} // namespace details
-} // namespace Tk
 
 // helper functions
 

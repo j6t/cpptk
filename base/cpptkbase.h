@@ -90,8 +90,7 @@ namespace details
 class Command
 {
 public:
-     explicit Command(std::string const &str,
-          std::string const &posfix = std::string());
+     explicit Command(std::string const &str);
      ~Command();
 
      void append(std::string const &str) { str_ += str; }
@@ -101,10 +100,8 @@ public:
      void invokeOnce() const;
 
 private:
-     
      mutable bool invoked_;
      std::string str_;
-     std::string postfix_;
 };
 
 // returns the length of the result list
@@ -175,7 +172,9 @@ protected:
      std::shared_ptr<Command> cmd_;
 };
 
-template<class DERIVED>
+class Expr;
+
+template<class DERIVED, class EXPR = Expr>
 class Result : public ResultBase
 {
 public:
@@ -211,6 +210,21 @@ public:
           static_cast<DERIVED&>(*this).invokeOnce();
           return toVector<T>();
      }
+
+     friend DERIVED&& operator-(DERIVED &&lhs, EXPR &&rhs)
+     {
+          lhs.cmd_->append(rhs.getValue());
+
+          return std::move(lhs);
+     }
+
+     friend DERIVED&& operator<<(std::string const &w, DERIVED &&rhs)
+     {
+          rhs.cmd_->prepend(" ");
+          rhs.cmd_->prepend(w);
+
+          return std::move(rhs);
+     }
 };
 
 // The intent is that the Expr object is a temporary.
@@ -221,7 +235,6 @@ class Expr : public Result<Expr>
 {
 public:
      explicit Expr(std::string const &str, bool starter = true);
-     Expr(std::string const &str, std::string const &postfix);
      Expr(std::shared_ptr<Command> const &cmd) : Result(cmd) {}
 
      void invokeOnce() { cmd_->invokeOnce(); }
@@ -229,9 +242,18 @@ public:
      
 private:
      std::string str_;
+};
 
-     friend Expr&& operator-(Expr &&lhs, Expr &&rhs);
-     friend Expr&& operator<<(std::string const &w, Expr &&rhs);
+class ExprWithPostfix : public Result<ExprWithPostfix>
+{
+public:
+     ExprWithPostfix(std::string const &str, std::string const &postfix);
+     ~ExprWithPostfix();
+
+     void invokeOnce();
+
+private:
+     std::string postfix_;
 };
 
 // The Params is used to encapsulate the list of parameters

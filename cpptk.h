@@ -31,7 +31,7 @@ details::Expr canvas(std::string const &name);
 
 details::Expr clipboard(std::string const &option);
 
-details::Expr clipboard(std::string const &option, std::string const &data);
+details::ExprWithPostfix clipboard(std::string const &option, std::string const &data);
 
 details::Expr destroy(std::string const &name);
 
@@ -167,10 +167,10 @@ details::Expr tk_textPaste(std::string const &w);
 
 details::Expr tkwait(std::string const &option, std::string const &w);
 
-details::Expr winfo(std::string const &option, std::string const &w);
+details::ExprWithPostfix winfo(std::string const &option, std::string const &w);
 
 template <typename T1, typename T2>
-details::Expr winfo(std::string const &option, T1 const &val1,
+details::ExprWithPostfix winfo(std::string const &option, T1 const &val1,
      T2 const &val2)
 {
      std::string str("winfo ");
@@ -179,7 +179,7 @@ details::Expr winfo(std::string const &option, T1 const &val1,
      postfix += details::toString(val1);
      postfix += " ";
      postfix += details::toString(val2);
-     return details::Expr(str, postfix);
+     return details::ExprWithPostfix(str, postfix);
 }
 
 details::Expr wm(std::string const &option, std::string const &w);
@@ -482,7 +482,7 @@ details::Expr dlineinfo(std::string const &indx);
 details::Expr dtag(std::string const &tag,
      std::string const &todel = std::string());
 
-details::Expr dump(std::string const &indx1,
+details::ExprWithPostfix dump(std::string const &indx1,
      std::string const &indx2 = std::string());
 
 details::Expr edit(std::string const &option);
@@ -804,7 +804,7 @@ details::Expr scan(std::string const &option,
      return details::Expr(str);
 }
 
-details::Expr search(std::string const &pattern,
+details::ExprWithPostfix search(std::string const &pattern,
      std::string const &indx1, std::string const &indx2 = std::string());
 
 template <typename T>
