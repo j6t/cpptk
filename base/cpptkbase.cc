@@ -505,14 +505,14 @@ string details::Expr::getValue() const
      }
 }
 
-details::Expr::operator string() const
+string details::ResultBase::toString() const
 {
      cmd_->invokeOnce();
 
      return Tcl_GetStringResult(getInterp());
 }
 
-details::Expr::operator int() const
+int details::ResultBase::toInt() const
 {
      cmd_->invokeOnce();
      
@@ -529,7 +529,7 @@ details::Expr::operator int() const
      return val;
 }
 
-details::Expr::operator double() const
+double details::ResultBase::toDouble() const
 {
      cmd_->invokeOnce();
      
@@ -546,9 +546,9 @@ details::Expr::operator double() const
      return val;
 }
 
-details::Expr::operator Tk::Point() const
+Tk::Point details::ResultBase::toPoint() const
 {
-     string ret(*this);
+     auto ret = toString();
      if (ret.empty())
      {
           return Tk::Point(0, 0);
@@ -566,9 +566,9 @@ details::Expr::operator Tk::Point() const
      return Point(x, y);
 }
 
-details::Expr::operator Tk::Box() const
+Tk::Box details::ResultBase::toBox() const
 {
-     string ret(*this);
+     auto ret = toString();
      if (ret.empty())
      {
           return Tk::Box(0, 0, 0, 0);

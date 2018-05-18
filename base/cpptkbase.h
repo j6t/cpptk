@@ -119,29 +119,24 @@ template <> double      getResultElem<double>(int indx);
 template <> std::string getResultElem<std::string>(int indx);
 
 
-// The Expr object is a result of executing Tk expression.
-// The intent is that the Expr object is a temporary.
-// There may be many Expr objects flying around and
-// accumulating state in a single Command object.
+// The Result object is a result of executing Tk expression.
 
-class Expr
+class ResultBase
 {
 public:
-     explicit Expr(std::string const &str, bool starter = true);
-     Expr(std::string const &str, std::string const &postfix);
-     
-     std::string getValue() const;
-     
-     operator std::string() const;
-     operator int() const;
-     operator double() const;
-     operator Tk::Point() const;
-     operator Tk::Box() const;
-     
+     ResultBase() = default;
+     explicit ResultBase(std::shared_ptr<Command> const &cmd) : cmd_(cmd) {}
+
+     std::string toString() const;
+     int toInt() const;
+     double toDouble() const;
+     Tk::Point toPoint() const;
+     Tk::Box toBox() const;
+
      template <typename T1, typename T2>
-     operator std::pair<T1, T2>() const
+     std::pair<T1, T2> toPair() const
      {
-          std::string ret(*this);
+          auto ret = toString();
           if (ret.empty())
           {
                return std::make_pair(T1(), T2());
@@ -152,19 +147,19 @@ public:
           {
                throw TkError("Cannot convert the result list into pair\n");
           }
-          
+
           return std::make_pair(getResultElem<T1>(0), getResultElem<T2>(1));
      }
-     
+
      template <typename T>
-     operator std::vector<T>() const
+     std::vector<T> toVector() const
      {
-          std::string ret(*this);
+          auto ret = toString();
           if (ret.empty())
           {
                return std::vector<T>();
           }
-          
+
           int len = getResultLen();
           std::vector<T> v;
           v.reserve(len);
@@ -172,13 +167,59 @@ public:
           {
                v.push_back(getResultElem<T>(i));
           }
-          
+
           return v;
      }
+
+protected:
+     std::shared_ptr<Command> cmd_;
+};
+
+class Result : public ResultBase
+{
+public:
+     using ResultBase::ResultBase;
+
+     operator std::string() const {
+          return toString();
+     }
+     operator int() const {
+          return toInt();
+     }
+     operator double() const {
+          return toDouble();
+     }
+     operator Tk::Point() const {
+          return toPoint();
+     }
+     operator Tk::Box() const {
+          return toBox();
+     }
+     template <typename T1, typename T2>
+     operator std::pair<T1, T2>() const {
+          return toPair<T1, T2>();
+     }
+     template <typename T>
+     operator std::vector<T>() const {
+          return toVector<T>();
+     }
+};
+
+// The intent is that the Expr object is a temporary.
+// There may be many Expr objects flying around and
+// accumulating state in a single Command object.
+
+class Expr : public Result
+{
+public:
+     explicit Expr(std::string const &str, bool starter = true);
+     Expr(std::string const &str, std::string const &postfix);
+     Expr(std::shared_ptr<Command> const &cmd) : Result(cmd) {}
+
+     std::string getValue() const;
      
 private:
      std::string str_;
-     std::shared_ptr<Command> cmd_;
 
      friend Expr&& operator-(Expr &&lhs, Expr &&rhs);
      friend Expr&& operator<<(std::string const &w, Expr &&rhs);
