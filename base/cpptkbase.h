@@ -175,32 +175,40 @@ protected:
      std::shared_ptr<Command> cmd_;
 };
 
+template<class DERIVED>
 class Result : public ResultBase
 {
 public:
      using ResultBase::ResultBase;
 
      operator std::string() && {
+          static_cast<DERIVED&>(*this).invokeOnce();
           return toString();
      }
      operator int() && {
+          static_cast<DERIVED&>(*this).invokeOnce();
           return toInt();
      }
      operator double() && {
+          static_cast<DERIVED&>(*this).invokeOnce();
           return toDouble();
      }
      operator Tk::Point() && {
+          static_cast<DERIVED&>(*this).invokeOnce();
           return toPoint();
      }
      operator Tk::Box() && {
+          static_cast<DERIVED&>(*this).invokeOnce();
           return toBox();
      }
      template <typename T1, typename T2>
      operator std::pair<T1, T2>() && {
+          static_cast<DERIVED&>(*this).invokeOnce();
           return toPair<T1, T2>();
      }
      template <typename T>
      operator std::vector<T>() && {
+          static_cast<DERIVED&>(*this).invokeOnce();
           return toVector<T>();
      }
 };
@@ -209,13 +217,14 @@ public:
 // There may be many Expr objects flying around and
 // accumulating state in a single Command object.
 
-class Expr : public Result
+class Expr : public Result<Expr>
 {
 public:
      explicit Expr(std::string const &str, bool starter = true);
      Expr(std::string const &str, std::string const &postfix);
      Expr(std::shared_ptr<Command> const &cmd) : Result(cmd) {}
 
+     void invokeOnce() { cmd_->invokeOnce(); }
      std::string getValue() const;
      
 private:

@@ -507,15 +507,11 @@ string details::Expr::getValue() const
 
 string details::ResultBase::toString() const
 {
-     cmd_->invokeOnce();
-
      return Tcl_GetStringResult(getInterp());
 }
 
 int details::ResultBase::toInt() const
 {
-     cmd_->invokeOnce();
-     
      Tcl_Interp *interp = getInterp();
      Tcl_Obj *obj = Tcl_GetObjResult(interp);
 
@@ -531,8 +527,6 @@ int details::ResultBase::toInt() const
 
 double details::ResultBase::toDouble() const
 {
-     cmd_->invokeOnce();
-     
      Tcl_Interp *interp = getInterp();
      Tcl_Obj *obj = Tcl_GetObjResult(interp);
      
