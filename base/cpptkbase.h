@@ -93,8 +93,7 @@ public:
      explicit Command(std::string const &str,
           std::string const &posfix = std::string());
      ~Command();
-     
-     std::string invoke() const;
+
      void append(std::string const &str) { str_ += str; }
      void prepend(std::string const &str) { str_.insert(0, str); }
      std::string getValue() const { return str_; }
@@ -142,7 +141,7 @@ public:
      template <typename T1, typename T2>
      operator std::pair<T1, T2>() const
      {
-          std::string ret(cmd_->invoke());
+          std::string ret(*this);
           if (ret.empty())
           {
                return std::make_pair(T1(), T2());
@@ -160,7 +159,7 @@ public:
      template <typename T>
      operator std::vector<T>() const
      {
-          std::string ret(cmd_->invoke());
+          std::string ret(*this);
           if (ret.empty())
           {
                return std::vector<T>();
