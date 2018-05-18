@@ -236,6 +236,9 @@ class Expr : public Result<Expr>
 public:
      explicit Expr(std::string const &str, bool starter = true);
      Expr(std::shared_ptr<Command> const &cmd) : Result(cmd) {}
+     Expr(Expr &&) = default;
+     ~Expr() noexcept(false);
+     Expr& operator=(Expr &&) = default;
 
      void invokeOnce() { cmd_->invokeOnce(); }
      std::string getValue() const;
@@ -248,7 +251,9 @@ class ExprWithPostfix : public Result<ExprWithPostfix>
 {
 public:
      ExprWithPostfix(std::string const &str, std::string const &postfix);
-     ~ExprWithPostfix();
+     ExprWithPostfix(ExprWithPostfix &&) = default;
+     ~ExprWithPostfix() noexcept(false);
+     ExprWithPostfix& operator=(ExprWithPostfix &&) = default;
 
      void invokeOnce();
 

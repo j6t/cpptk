@@ -455,13 +455,7 @@ details::Command::Command(std::string const &str)
 {
 }
 
-details::Command::~Command()
-{
-     if (!TkError::inTkError)
-     {
-          invokeOnce();
-     }
-}
+details::Command::~Command() = default;
 
 void details::Command::invokeOnce() const
 {
@@ -484,6 +478,14 @@ details::Expr::Expr(string const &str, bool starter)
      else
      {
           str_ = str;
+     }
+}
+
+details::Expr::~Expr() noexcept(false)
+{
+     if (!TkError::inTkError && cmd_)
+     {
+          invokeOnce();
      }
 }
 
@@ -582,10 +584,12 @@ details::ExprWithPostfix::ExprWithPostfix(std::string const &str, std::string co
 {
 }
 
-details::ExprWithPostfix::~ExprWithPostfix()
+details::ExprWithPostfix::~ExprWithPostfix() noexcept(false)
 {
-     if (!postfix_.empty())
-          cmd_->append(postfix_);
+     if (!TkError::inTkError && cmd_)
+     {
+          invokeOnce();
+     }
 }
 
 void details::ExprWithPostfix::invokeOnce()
