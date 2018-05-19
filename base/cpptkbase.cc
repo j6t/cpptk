@@ -447,54 +447,19 @@ string details::getResultElem<string>(int indx)
      return Tcl_GetString(obj);
 }
 
-details::Command::Command(std::string const &str)
-     : invoked_(false), str_(str)
+void details::ResultBase::invokeOnce()
 {
-}
-
-details::Command::~Command() = default;
-
-void details::Command::invokeOnce() const
-{
-     if (invoked_ == false)
+     if (!cmd_.empty())
      {
-          invoked_ = true;
-          
-          string cmd(str_);
-          
-          do_eval(cmd);
-     }
-}
-
-details::Expr::Expr(string const &str, bool starter)
-{
-     if (starter)
-     {
-          cmd_.reset(new Command(str));
-     }
-     else
-     {
-          str_ = str;
+          do_eval(exchange(cmd_, {}));
      }
 }
 
 details::Expr::~Expr() noexcept(false)
 {
-     if (!uncaught_exception() && cmd_)
+     if (!uncaught_exception())
      {
           invokeOnce();
-     }
-}
-
-string details::Expr::getValue() const
-{
-     if (!str_.empty())
-     {
-          return str_;
-     }
-     else
-     {
-          return cmd_->getValue();
      }
 }
 
@@ -576,14 +541,14 @@ Tk::Box details::ResultBase::toBox() const
 }
 
 details::ExprWithPostfix::ExprWithPostfix(std::string const &str, std::string const &postfix) :
-     Result(shared_ptr<Command>(new Command(str))),
+     Result(str),
      postfix_(postfix)
 {
 }
 
 details::ExprWithPostfix::~ExprWithPostfix() noexcept(false)
 {
-     if (!uncaught_exception() && cmd_)
+     if (!uncaught_exception())
      {
           invokeOnce();
      }
@@ -591,11 +556,8 @@ details::ExprWithPostfix::~ExprWithPostfix() noexcept(false)
 
 void details::ExprWithPostfix::invokeOnce()
 {
-     if (!postfix_.empty()) {
-          cmd_->append(postfix_);
-	  postfix_.clear();
-     }
-     cmd_->invokeOnce();
+     cmd_ += exchange(postfix_, {});
+     Result::invokeOnce();
 }
 
 // these two specializations are used to extract parameter

@@ -934,7 +934,7 @@ details::Expr arrowshape(T1 const &t1, T2 const &t2, T3 const &t3)
      str += details::toString(t1); str += " ";
      str += details::toString(t2); str += " ";
      str += details::toString(t3); str += "}";
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 details::Expr backwards();
@@ -966,7 +966,7 @@ template <class Functor> details::Expr invalidcommand(Functor f)
      
      std::string str(" -invalidcommand ");
      str += newCmd;
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 details::Expr invalidcommand(char const *name);
@@ -983,7 +983,7 @@ template <class Functor> details::Expr postcommand(Functor f)
      
      std::string str(" -postcommand ");
      str += newCmd;
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 details::Expr menutype(std::string const &type);
@@ -1012,7 +1012,7 @@ details::Expr scrollregion(T1 const &x1, T2 const &y1,
      str += details::toString(y1); str += " ";
      str += details::toString(x2); str += " ";
      str += details::toString(y2);
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 details::Expr shrink();
@@ -1034,7 +1034,7 @@ details::Expr tags(InputIterator b, InputIterator e)
      }
      cmd += "}";
      
-     return details::Expr(cmd, false);
+     return details::Expr(cmd);
 }
 
 template <class Functor> details::Expr tearoffcommand(Functor f)
@@ -1045,7 +1045,7 @@ template <class Functor> details::Expr tearoffcommand(Functor f)
      
      std::string str(" -tearoffcommand ");
      str += newCmd;
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 details::Expr tearoffcommand(std::string const &name);
@@ -1058,7 +1058,7 @@ details::Expr textvariable(T &t)
 {
      std::string str(" -textvariable ");
      str += details::addLinkVar(t);
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 details::Expr textvariable(std::string const &name);
@@ -1072,7 +1072,7 @@ details::Expr validatecommand(Functor f)
      
      std::string str(" -validatecommand ");
      str += newCmd;
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 template <class Functor, class... ValidateAttr>
@@ -1090,7 +1090,7 @@ details::Expr validatecommand(Functor f, ValidateAttr const &... va)
      };
      (void)dummy;
                         str += " }";
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 template <typename T>
@@ -1098,7 +1098,7 @@ details::Expr variable(T &t)
 {
      std::string str(" -variable ");
      str += details::addLinkVar(t);
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 details::Expr variable(std::string const &name);
@@ -1484,7 +1484,7 @@ public:
      
           std::string str(" -command ");
           str += newCmd;
-          return Expr(str, false);
+          return Expr(str);
      }
 
      Expr operator()(std::string const &name) const;

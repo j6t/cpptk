@@ -74,27 +74,8 @@ struct CallbackTraits<R (*)(T...)>
 namespace details
 {
 
-// The Command class gathers everything on its road while
+// The Result class gathers everything on its road while
 // it travels the Tk expression
-// It executes the command when destroyed, which is at the end
-// of full Tk expression
-
-class Command
-{
-public:
-     explicit Command(std::string const &str);
-     ~Command();
-
-     void append(std::string const &str) { str_ += str; }
-     void prepend(std::string const &str) { str_.insert(0, str); }
-     std::string getValue() const { return str_; }
-     
-     void invokeOnce() const;
-
-private:
-     mutable bool invoked_;
-     std::string str_;
-};
 
 // returns the length of the result list
 int getResultLen();
@@ -114,7 +95,7 @@ class ResultBase
 {
 public:
      ResultBase() = default;
-     explicit ResultBase(std::shared_ptr<Command> const &cmd) : cmd_(cmd) {}
+     explicit ResultBase(std::string const &cmd) : cmd_(cmd) {}
 
      std::string toString() const;
      int toInt() const;
@@ -161,7 +142,9 @@ public:
      }
 
 protected:
-     std::shared_ptr<Command> cmd_;
+     void invokeOnce();
+
+     std::string cmd_;
 };
 
 class Expr;
@@ -203,17 +186,18 @@ public:
           return toVector<T>();
      }
 
+     using ResultBase::cmd_;    // needed so that friends can access it
+
      friend DERIVED&& operator-(DERIVED &&lhs, EXPR &&rhs)
      {
-          lhs.cmd_->append(rhs.getValue());
+          lhs.cmd_ += std::exchange(rhs.cmd_, {});
 
           return std::move(lhs);
      }
 
      friend DERIVED&& operator<<(std::string const &w, DERIVED &&rhs)
      {
-          rhs.cmd_->prepend(" ");
-          rhs.cmd_->prepend(w);
+          rhs.cmd_ = w + " " + move(rhs.cmd_);
 
           return std::move(rhs);
      }
@@ -226,15 +210,11 @@ public:
 class Expr : public Result<Expr>
 {
 public:
-     explicit Expr(std::string const &str, bool starter = true);
-     Expr(std::shared_ptr<Command> const &cmd) : Result(cmd) {}
+     explicit Expr(std::string const &str) : Result(str) {}
      Expr(Expr &&) = default;
      ~Expr() noexcept(false);
      Expr& operator=(Expr &&) = default;
 
-     void invokeOnce() { cmd_->invokeOnce(); }
-     std::string getValue() const;
-     
 private:
      std::string str_;
 };
@@ -392,7 +372,7 @@ public:
           str += (quote_ ? "\"" : "");
           str += toString(t);
           str += (quote_ ? "\"" : "");
-          return Expr(str, false);
+          return Expr(str);
      }
      
 private:

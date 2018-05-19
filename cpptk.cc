@@ -845,47 +845,47 @@ Expr Tk::yview(string const option, int number, string const &what)
 
 Expr Tk::backwards()
 {
-     return Expr(" -backwards", false);
+     return Expr(" -backwards");
 }
 
 Expr Tk::cliptype(string const &type)
 {
      string str(" -type ");
      str += type;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::count(int &i)
 {
      std::string str(" -count ");
      str += details::addLinkVar(i);
-     return details::Expr(str, false);
+     return details::Expr(str);
 }
 
 Expr Tk::count(string const &name)
 {
      string str(" -count ");
      str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::defaultbutton(string const &but)
 {
      string str(" -default \"");
      str += but; str += '\"';
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::defaultstate(string const &name)
 {
      string str(" -default ");
      str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::exact()
 {
-     return Expr(" -exact", false);
+     return Expr(" -exact");
 }
 
 Expr Tk::filetypes(string const &types)
@@ -893,100 +893,100 @@ Expr Tk::filetypes(string const &types)
      string str(" -filetypes {");
      str += types;
      str += "}";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::forwards()
 {
-     return Expr(" -forwards", false);
+     return Expr(" -forwards");
 }
 
 Expr Tk::grayscale()
 {
-     return Expr(" -grayscale", false);
+     return Expr(" -grayscale");
 }
 
 Expr Tk::invalidcommand(char const *name)
 {
      string str(" -invalidcommand { ");
      str += name; str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::invalidcommand(string const &name)
 {
      string str(" -invalidcommand { ");
      str += name; str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::invalidcommand(CallbackHandle const &handle)
 {
      string str(" -invalidcommand { ");
      str += handle.get(); str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::menutype(string const &type)
 {
      string str(" -type ");
      str += type;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::messagetext(string const &txt)
 {
      string str(" -message \"");
      str += txt; str += '\"';
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::messagetype(string const &type)
 {
      string str(" -type ");
      str += type;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::multiple()
 {
-     return Expr(" -multiple", false);
+     return Expr(" -multiple");
 }
 
 Expr Tk::nocase()
 {
-     return Expr(" -nocase", false);
+     return Expr(" -nocase");
 }
 
 Expr Tk::postcommand(string const &name)
 {
      string str(" -postcommand { ");
      str += name; str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::postcommand(CallbackHandle const &handle)
 {
      string str(" -postcommand { ");
      str += handle.get(); str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::regexp()
 {
-     return Expr(" -regexp", false);
+     return Expr(" -regexp");
 }
 
 Expr Tk::shrink()
 {
-     return Expr(" -shrink", false);
+     return Expr(" -shrink");
 }
 
 Expr Tk::submenu(string const &menu)
 {
      string str(" -menu ");
      str += menu;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::subsample(int x, int y)
@@ -994,40 +994,40 @@ Expr Tk::subsample(int x, int y)
      string str(" -subsample ");
      str += toString(x); str += " ";
      str += toString(y);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::tags()
 {
-     return Expr(" -tag", false);
+     return Expr(" -tag");
 }
 
 Expr Tk::tearoffcommand(string const &name)
 {
      string str(" -tearoffcommand { ");
      str += name; str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::tearoffcommand(CallbackHandle const &handle)
 {
      string str(" -tearoffcommand { ");
      str += handle.get(); str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::textvariable(string const &name)
 {
      string str(" -textvariable ");
      str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::variable(string const &name)
 {
      string str(" -variable ");
      str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::zoom(double x, double y)
@@ -1035,7 +1035,7 @@ Expr Tk::zoom(double x, double y)
      string str(" -zoom ");
      str += toString(x); str += " ";
      str += toString(y);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 // event attribute specifiers
@@ -1428,7 +1428,7 @@ Expr Tk::details::ValidateToken::operator()(string const &when) const
 {
      string str(" -validate ");
      str += when;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 ValidateToken Tk::validate;
@@ -1437,7 +1437,7 @@ Tk::details::AllToken::AllToken() : BasicToken("all") {}
 
 Expr Tk::details::AllToken::operator()() const
 {
-     return Expr(" -all", false);
+     return Expr(" -all");
 }
 
 AllToken Tk::all;
@@ -1448,14 +1448,14 @@ Expr Tk::details::CommandToken::operator()(string const &name) const
 {
      string str(" -command { ");
      str += name; str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::details::CommandToken::operator()(CallbackHandle const &handle) const
 {
      string str(" -command { ");
      str += handle.get(); str += " }";
-     return Expr(str, false);
+     return Expr(str);
 }
 
 CommandToken Tk::command;
@@ -1464,14 +1464,14 @@ Tk::details::ElideToken::ElideToken() : BasicToken("elide") {}
 
 Expr Tk::details::ElideToken::operator()() const
 {
-     return Expr(" -elide", false);
+     return Expr(" -elide");
 }
 
 Expr Tk::details::ElideToken::operator()(bool b) const
 {
      string str(" -elide ");
      str += toString(b);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 ElideToken Tk::elide;
@@ -1482,7 +1482,7 @@ Expr Tk::details::FromToken::operator()(int val) const
 {
      string str(" -from ");
      str += toString(val);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::details::FromToken::operator()(int x1, int y1, int x2, int y2) const
@@ -1492,7 +1492,7 @@ Expr Tk::details::FromToken::operator()(int x1, int y1, int x2, int y2) const
      str += toString(y1); str += " ";
      str += toString(x2); str += " ";
      str += toString(y2);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 FromToken Tk::from;
@@ -1501,14 +1501,14 @@ Tk::details::ImageToken::ImageToken() : BasicToken("image") {}
 
 Expr Tk::details::ImageToken::operator()() const
 {
-     return Expr(" -image", false);
+     return Expr(" -image");
 }
 
 Expr Tk::details::ImageToken::operator()(string const &name) const
 {
      string str(" -image ");
      str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 ImageToken Tk::image;
@@ -1517,7 +1517,7 @@ Tk::details::MarkToken::MarkToken() : BasicToken("mark") {}
 
 Expr Tk::details::MarkToken::operator()() const
 {
-     return Expr(" -mark", false);
+     return Expr(" -mark");
 }
 
 Expr Tk::details::MarkToken::operator()(string const &option,
@@ -1548,7 +1548,7 @@ Expr Tk::details::MenuLabelToken::operator()(string const &label) const
 {
      string str(" -label \"");
      str += label; str += '\"';
-     return Expr(str, false);
+     return Expr(str);
 }
 
 MenuLabelToken Tk::menulabel;
@@ -1557,14 +1557,14 @@ Tk::details::TextToken::TextToken() : BasicToken("text") {}
 
 Expr Tk::details::TextToken::operator()() const
 {
-     return Expr(" -text", false);
+     return Expr(" -text");
 }
 
 Expr Tk::details::TextToken::operator()(string const &t) const
 {
      string str(" -text \"");
      str += quote(t); str += '\"';
-     return Expr(str, false);
+     return Expr(str);
 }
 
 TextToken Tk::text;
@@ -1575,7 +1575,7 @@ Expr Tk::details::ToToken::operator()(int val) const
 {
      string str(" -to ");
      str += toString(val);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::details::ToToken::operator()(int x, int y) const
@@ -1583,7 +1583,7 @@ Expr Tk::details::ToToken::operator()(int x, int y) const
      string str(" -to ");
      str += toString(x); str += " ";
      str += toString(y);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::details::ToToken::operator()(int x1, int y1, int x2, int y2) const
@@ -1593,7 +1593,7 @@ Expr Tk::details::ToToken::operator()(int x1, int y1, int x2, int y2) const
      str += toString(y1); str += " ";
      str += toString(x2); str += " ";
      str += toString(y2);
-     return Expr(str, false);
+     return Expr(str);
 }
 
 ToToken Tk::to;
@@ -1605,10 +1605,10 @@ Expr Tk::details::WindowToken::operator()(string const &name) const
      string str(" -window");
      if (name.empty())
      {
-          return Expr(str, false);
+          return Expr(str);
      }
      str += " "; str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 WindowToken Tk::window;
@@ -1619,7 +1619,7 @@ Expr Tk::details::WndClassToken::operator()(string const &name) const
 {
      string str(" -class ");
      str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 WndClassToken Tk::wndclass;
@@ -1637,7 +1637,7 @@ Expr Tk::details::AfterToken::operator()(string const &name) const
 {
      string str(" -after ");
      str += name;
-     return Expr(str, false);
+     return Expr(str);
 }
 
 Expr Tk::details::AfterToken::operator()(int time, string const &name) const
