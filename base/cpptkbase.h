@@ -180,27 +180,27 @@ class Result : public ResultBase
 public:
      using ResultBase::ResultBase;
 
-     operator std::string() const {
+     operator std::string() && {
           return toString();
      }
-     operator int() const {
+     operator int() && {
           return toInt();
      }
-     operator double() const {
+     operator double() && {
           return toDouble();
      }
-     operator Tk::Point() const {
+     operator Tk::Point() && {
           return toPoint();
      }
-     operator Tk::Box() const {
+     operator Tk::Box() && {
           return toBox();
      }
      template <typename T1, typename T2>
-     operator std::pair<T1, T2>() const {
+     operator std::pair<T1, T2>() && {
           return toPair<T1, T2>();
      }
      template <typename T>
-     operator std::vector<T>() const {
+     operator std::vector<T>() && {
           return toVector<T>();
      }
 };
