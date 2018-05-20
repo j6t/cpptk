@@ -1439,6 +1439,8 @@ void additionalTclTest()
      
      eval("some explicit Tcl/Tk command");
      CHECK("some explicit Tcl/Tk command");
+     "some Tcl/Tk command using a literal"_tcl;
+     CHECK("some Tcl/Tk command using a literal");
 
 
      std::cout << "additional Tcl test OK\n";

@@ -656,6 +656,26 @@ Expr Tk::eval(string const &str)
      return Expr(str);
 }
 
+details::Expr Tk::literals::operator"" _tcl(const char *str, std::size_t len)
+{
+	return eval(std::string(str, len));
+}
+
+std::string Tk::literals::operator"" _tcls(const char *str, std::size_t len)
+{
+	return eval(std::string(str, len));
+}
+
+int Tk::literals::operator"" _tcli(const char *str, std::size_t len)
+{
+	return int(eval(std::string(str, len)));
+}
+
+double Tk::literals::operator"" _tcld(const char *str, std::size_t len)
+{
+	return double(eval(std::string(str, len)));
+}
+
 void Tk::init(char *argv0)
 {
 	Tcl_FindExecutable(argv0);

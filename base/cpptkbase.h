@@ -468,6 +468,13 @@ private:
 // for brute-force evaluation of simple scripts
 details::Expr eval(std::string const &str);
 
+inline namespace literals {
+     details::Expr operator"" _tcl(const char *str, std::size_t len);
+     std::string operator"" _tcls(const char *str, std::size_t len);
+     int operator"" _tcli(const char *str, std::size_t len);
+     double operator"" _tcld(const char *str, std::size_t len);
+} // namespace literals
+
 // for initializing Tcl environment
 void init(char *argv0);
 
