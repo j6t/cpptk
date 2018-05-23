@@ -11,9 +11,9 @@
 <br>
 version 1.0.2<br>
 <br>
-Copyright &copy; 2004-2006, <a href="http://www.msobczak.com/"
+Copyright &copy; 2004-2006 <a href="http://www.msobczak.com/"
  target="_blank">Maciej
-Sobczak</a><br>
+Sobczak</a>, 2018 Johannes Sixt<br>
 <br>
 <a href="#intro">Introduction</a><br>
 <a href="#commands">Commands</a><br>
@@ -43,6 +43,16 @@ make it parseable by the C++ compiler. In some particular cases, it was
 necessary to change the names of commands and options, to resolve
 conflicts. The rest of this document
 presents the examples for each Tk element, listed alphabetically.<br>
+<br>
+To make the commands available in a C++ program, do the following:
+<br>
+<br>
+<code>#include &lt;cpptk.h&gt;</code><br>
+<code>using namespace Tk;</code><br>
+<br>
+Note that ambiguities of some commands arise if <code>using namespace std;</code>
+is also applied. They can be disambiguated with the <code>Tk::</code> namespace
+specifier.<br>
 <br>
 In the following examples, names ".b1", ".b2", etc. denote existing
 buttons, ".f1", ".f2", etc. denote existing frames, etc.<br>
@@ -81,8 +91,8 @@ void fun3(string const &amp;win, int x, int y);<br>
       <span style="font-weight: bold;">bind</span>(".f3",
 "&lt;Button-1&gt;", fun3, event_W, event_x, event_y);<br>
       <br>
-Note: You can specify arguments (up to 10) to the callback functions
-(like % substitutions in Tcl/Tk) with the help of event_ specifiers,
+Note: You can specify arguments to the callback functions
+(like % substitutions in Tcl/Tk) with the help of <code>event_</code> specifiers,
 but the number of function parameters and their types should match the
 given specifiers, otherwise the code will not compile.<br>
       </td>
@@ -2157,9 +2167,16 @@ retrieve the name of respective Tcl variable.</li>
     <li><code>std::string eval(std::string const &amp;str);</code> -
 this function forces evaluation of the given script. Can be used when
 everything else fails. :-)</li>
+    <li>The user-defined literal suffix <code>_tcl</code> can be used to submit
+a string constant to the Tcl interpreter for evaluation. Additional suffixes
+convert the result to a particular type:
+<code>_tcls</code> returns a <code>std::string</code>,
+<code>_tcli</code> returns an <code>int</code>,
+<code>_tcld</code> returns a <code>double</code>,
+for example, <code>auto foo = "return $foo"_tcls;</code></li>
     <li><code>void init(char *argv0);</code> - should be called at the
 beginning of the C++/Tk program with the value of <code>argv[0]</code>.</li>
-    <li><code>void runEventLoop();</code> - runs the Tk event toop.
+    <li><code>void runEventLoop();</code> - runs the Tk event loop.
 Normally never returns.</li>
     <li><code>void setDumpStream(std::ostream &amp;os);</code> - set
 the stream for dumping Tcl/Tk commands. Can be useful for testing and
@@ -2211,17 +2228,16 @@ and are used in tests that accompany the library.<br>
 On Unix-like systems, the following command is enough to compile a
 one-file C++/Tk program (shown for FreeBSD):<br>
 <br>
-<code>$ g++ myprog.cc cpptk.cc base/cpptkbase.cc -o myprog
--I/usr/local/include/tcl8.4
--I/usr/local/include/tk8.4 -I/usr/X11R6/include
--I/usr/local/include/boost_1_33_0 -L/usr/local/lib -ltcl84 -ltk84
+<code>$ g++ -std=c++14 myprog.cc cpptk.cc base/cpptkbase.cc -o myprog
+-I/usr/local/include/tcl8.6
+-I/usr/local/include/tk8.6 -I/usr/X11R6/include
+-I/usr/local/include/boost_1_61_0 -L/usr/local/lib -ltcl8.6 -ltk8.6
 -pthread<br>
 </code><br>
 Depending on the specific Unix system, it may be necessary to use
 different search paths or threading option (<code>-lpthread</code> is
 typical on Linux, but may not be needed at all).<br>
-Note also that a decent g++ compiler is necessary (in particular, g++
-2.95 or 2.96 will not work).<br>
+Note also that a C++ compiler is necessary that supports C++14.<br>
 <br>
 <br>
 <ol>
