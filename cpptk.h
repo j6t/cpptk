@@ -1662,6 +1662,10 @@ std::string txt(T1 const &t1, T2 const &t2)
      return str;
 }
 
+// enable and query whether Themed Tk widgets are used
+void useTtk(bool use);
+bool useTtk();
+
 } // namespace Tk
 
 #endif // CPPTK_H_INCLUDED

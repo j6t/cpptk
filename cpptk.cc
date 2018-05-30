@@ -18,6 +18,12 @@ using namespace std;
 
 // various Tk bits and pieces
 
+
+// Themed Tk widgets
+static string ttk;
+void Tk::useTtk(bool use) { ttk = use ? "ttk::"s : string{}; }
+bool Tk::useTtk() { return !ttk.empty(); }
+
 // starter pieces (genuine Tk commands)
 
 Expr Tk::bell() { return Expr("bell"); }
@@ -39,9 +45,7 @@ Expr Tk::bindtags(string const &name, string const &tags)
 
 Expr Tk::button(string const &name)
 {
-     string str("button ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "button "s + name);
 }
 
 Expr Tk::canvas(string const &name)
@@ -77,9 +81,7 @@ Expr Tk::destroy(string const &name)
 
 Expr Tk::entry(string const &name)
 {
-     string str("entry ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "entry "s + name);
 }
 
 Expr Tk::fonts(string const &option, string const &name)
@@ -138,16 +140,12 @@ Expr Tk::images(string const &option, string const &tn, string const &name)
 
 Expr Tk::label(string const &name)
 {
-     string str("label ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "label "s + name);
 }
 
 Expr Tk::labelframe(string const &name)
 {
-     string str("labelframe ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "labelframe "s + name);
 }
 
 Expr Tk::listbox(string const &name)
@@ -166,9 +164,7 @@ Expr Tk::menu(string const &name)
 
 Expr Tk::menubutton(string const &name)
 {
-     string str("menubutton ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "menubutton "s + name);
 }
 
 Expr Tk::message(string const &name)
@@ -229,30 +225,22 @@ Expr Tk::pack(string const &w1,
 
 Expr Tk::panedwindow(string const &name)
 {
-     string str("panedwindow ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "panedwindow "s + name);
 }
 
 Expr Tk::scale(string const &name)
 {
-     string str("scale ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "scale "s + name);
 }
 
 Expr Tk::scrollbar(string const &name)
 {
-     string str("scrollbar ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "scrollbar "s + name);
 }
 
 Expr Tk::spinbox(string const &name)
 {
-     string str("spinbox ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "spinbox "s + name);
 }
 
 Expr Tk::textw(string const &name)
@@ -1124,9 +1112,7 @@ Tk::details::CheckButtonToken::CheckButtonToken()
 
 Expr Tk::details::CheckButtonToken::operator()(string const &name) const
 {
-     string str("checkbutton ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "checkbutton "s + name);
 }
 
 CheckButtonToken Tk::checkbutton;
@@ -1135,9 +1121,7 @@ Tk::details::FrameToken::FrameToken() : BasicToken("frame") {}
 
 Expr Tk::details::FrameToken::operator()(string const &name) const
 {
-     string str("frame ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "frame "s + name);
 }
 
 FrameToken Tk::frame;
@@ -1221,9 +1205,7 @@ Tk::details::RadioButtonToken::RadioButtonToken()
 
 Expr Tk::details::RadioButtonToken::operator()(string const &name) const
 {
-     string str("radiobutton ");
-     str += name;
-     return Expr(str);
+     return Expr(ttk + "radiobutton "s + name);
 }
 
 RadioButtonToken Tk::radiobutton;
