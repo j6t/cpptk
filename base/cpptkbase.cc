@@ -676,7 +676,7 @@ double Tk::literals::operator"" _tcld(const char *str, std::size_t len)
 	return double(eval(std::string(str, len)));
 }
 
-void Tk::init(char *argv0)
+void Tk::init(const char *argv0)
 {
 	Tcl_FindExecutable(argv0);
 }

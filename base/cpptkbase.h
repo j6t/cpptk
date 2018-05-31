@@ -476,7 +476,7 @@ inline namespace literals {
 } // namespace literals
 
 // for initializing Tcl environment
-void init(char *argv0);
+void init(const char *argv0);
 
 // for falling into the event loop
 void runEventLoop();
