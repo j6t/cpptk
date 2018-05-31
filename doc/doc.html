@@ -1912,8 +1912,7 @@ tearoffcommand<br>
       <td style="vertical-align: top;">menu(".m") -<span
  style="font-weight: bold;">tearoff</span>(true) -<span
  style="font-weight: bold;">tearoffcommand</span>(fun);<br>
-// fun is any function
-or function object with appropriate parameter types<br>
+// fun is any function object taking two std::string parameters<br>
       </td>
     </tr>
     <tr>
@@ -1970,8 +1969,8 @@ validatecommand<br>
 entry(".e") -<span style="font-weight: bold;">validate</span>(key) -<span
  style="font-weight: bold;">validatecommand</span>(mycheck, valid_P);<br>
       <br>
-// validatecommand accepts any function or function object returning
-something convertible to bool, long, double or string and with the set
+// validatecommand accepts any function object returning
+something convertible to bool and the set
 of parameters compatible with the list of validation specifiers<br>
       </td>
     </tr>
@@ -2113,9 +2112,9 @@ valid_v<br>
 valid_V<br>
 valid_W</code><br>
     <br>
-Note 1: the callback function or function object has to return
-something that is convertible to bool, int, double or std::string.<br>
-Note 2: the number and types of parameters in the function or function
+Note 1: the callback function object has to return
+something that is convertible to bool.<br>
+Note 2: the number and types of parameters in the function
 object used for callback must be compatible with the specifiers.<br>
     <br>
   </li>

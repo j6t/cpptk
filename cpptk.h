@@ -227,11 +227,11 @@ details::Expr wmprotocol(std::string const &w,
 
 template <class Functor>
 details::Expr wmprotocol(std::string const &w,
-     std::string const &proto, Functor f)
+     std::string const &proto, Functor &&f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor>(f)));
+               new details::Callback<void()>(std::forward<Functor>(f))));
 
      std::string str("wm protocol ");
      str += w;          str += " ";
@@ -860,14 +860,15 @@ details::Expr tag(std::string const &option, std::string const &tagname,
      std::string const &indx1, char const *indx2);
 
 template <class Functor, class... EventAttr>
-details::Expr tag(std::string const &option, std::string const &name,
-     std::string const &seq, Functor f,
+typename details::RequireFunctor<void(typename EventAttr::attrType...), Functor, details::Expr>::type
+tag(std::string const &option, std::string const &name,
+     std::string const &seq, Functor &&f,
      EventAttr const &... ea)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor,
-                    typename EventAttr::attrType...>(f)));
+               new details::Callback<void(
+                    typename EventAttr::attrType...)>(std::forward<Functor>(f))));
      
      std::string str("tag ");
      str += option;     str += " ";
@@ -958,11 +959,11 @@ details::Expr forwards();
 
 details::Expr grayscale();
 
-template <class Functor> details::Expr invalidcommand(Functor f)
+template <class Functor> details::Expr invalidcommand(Functor &&f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor>(f)));
+               new details::Callback<void()>(std::forward<Functor>(f))));
      
      std::string str(" -invalidcommand ");
      str += newCmd;
@@ -975,11 +976,11 @@ details::Expr invalidcommand(std::string const &name);
 class CallbackHandle;
 details::Expr invalidcommand(CallbackHandle const &handle);
 
-template <class Functor> details::Expr postcommand(Functor f)
+template <class Functor> details::Expr postcommand(Functor &&f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor>(f)));
+               new details::Callback<void()>(std::forward<Functor>(f))));
      
      std::string str(" -postcommand ");
      str += newCmd;
@@ -1037,11 +1038,13 @@ details::Expr tags(InputIterator b, InputIterator e)
      return details::Expr(cmd);
 }
 
-template <class Functor> details::Expr tearoffcommand(Functor f)
+template <class Functor>
+typename details::RequireFunctor<void(std::string,std::string), Functor, details::Expr>::type
+tearoffcommand(Functor &&f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor>(f)));
+               new details::Callback<void(std::string,std::string)>(std::forward<Functor>(f))));
      
      std::string str(" -tearoffcommand ");
      str += newCmd;
@@ -1064,11 +1067,11 @@ details::Expr textvariable(T &t)
 details::Expr textvariable(std::string const &name);
 
 template <class Functor>
-details::Expr validatecommand(Functor f)
+details::Expr validatecommand(Functor &&f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor>(f)));
+               new details::Callback<bool()>(std::forward<Functor>(f))));
      
      std::string str(" -validatecommand ");
      str += newCmd;
@@ -1076,12 +1079,12 @@ details::Expr validatecommand(Functor f)
 }
 
 template <class Functor, class... ValidateAttr>
-details::Expr validatecommand(Functor f, ValidateAttr const &... va)
+details::Expr validatecommand(Functor &&f, ValidateAttr const &... va)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor,
-                    typename ValidateAttr::validType...>(f)));
+               new details::Callback<bool(
+                    typename ValidateAttr::validType...)>(std::forward<Functor>(f))));
      
      std::string str(" -validatecommand { ");
      str += newCmd;
@@ -1152,11 +1155,11 @@ extern char const *wrapword;   // for consistency
 // additional functions
 
 template <class Functor>
-details::Expr afteridle(Functor f)
+details::Expr afteridle(Functor &&f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor>(f)));
+               new details::Callback<void()>(std::forward<Functor>(f))));
 
      std::string str("after idle ");
      str += newCmd;
@@ -1183,14 +1186,15 @@ public:
           std::string const &seq) const;
 
      template <class Functor, class... EventAttr>
-     Expr operator()(std::string const &name,
-          std::string const &seq, Functor f,
+     typename details::RequireFunctor<void(typename EventAttr::attrType...), Functor, details::Expr>::type
+     operator()(std::string const &name,
+          std::string const &seq, Functor &&f,
           EventAttr const &... ea) const
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback<Functor,
-                         typename EventAttr::attrType...>(f)));
+                    new Callback<void(
+                         typename EventAttr::attrType...)>(std::forward<Functor>(f))));
      
           std::string str("bind ");
           str += name;       str += " ";
@@ -1476,11 +1480,13 @@ class CommandToken : public BasicToken
 public:
      CommandToken();
      
-     template <class Functor> Expr operator()(Functor f) const
+     template <class Functor>
+     typename RequireFunctor<void(),Functor, Expr>::type
+     operator()(Functor &&f) const
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback<Functor>(f)));
+                    new Callback<void()>(std::forward<Functor>(f))));
      
           std::string str(" -command ");
           str += newCmd;
@@ -1573,11 +1579,12 @@ public:
      Expr operator()(std::string const &option, std::string const &id) const;
 
      template <class Functor>
-     Expr operator()(int t, Functor f) const
+     typename RequireFunctor<void(),Functor, Expr>::type
+     operator()(int t, Functor &&f) const
      {
           std::string newCmd = addCallback(
                std::shared_ptr<CallbackBase>(
-                    new Callback<Functor>(f)));
+                    new Callback<void()>(std::forward<Functor>(f))));
 
           std::string str("after ");
           str += toString(t); str += " ";

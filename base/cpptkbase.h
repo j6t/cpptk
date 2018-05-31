@@ -16,6 +16,7 @@
 #   endif
 # endif
 
+#include <functional>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -50,25 +51,6 @@ struct Box
 {
      Box(int a, int b, int c, int d) : x1(a), y1(b), x2(c), y2(d) {}
      int x1, y1, x2, y2;
-};
-
-// The CallbackTraits class keeps basic information about
-// callback functors.
-// By default, functor is supposed to define its result_type.
-// Users can provide their own specializations of this class.
-
-template <class Functor>
-struct CallbackTraits
-{
-     typedef typename Functor::result_type result_type;
-};
-
-// partial specialization for pointer to function
-
-template <typename R, class... T>
-struct CallbackTraits<R (*)(T...)>
-{
-     typedef R result_type;
 };
 
 namespace details
@@ -275,10 +257,10 @@ void setResult(std::string const &s);
 // The Dispatch class is used to execute the callback functor
 // and to capture their results.
 
-template <typename R, class Functor, class... T>
+template <typename R, class... T>
 struct Dispatch
 {
-     static void doDispatch(Functor f, T const &... t)
+     static void doDispatch(std::function<R(T...)> &f, T const &... t)
      {
           R result = f(t...);
           setResult(result);
@@ -286,40 +268,47 @@ struct Dispatch
 };
 
 // partial specialization for functors that return nothing
-template <class Functor, class... T>
-struct Dispatch<void, Functor, T...>
+template <class... T>
+struct Dispatch<void, T...>
 {
-     static void doDispatch(Functor f, T const &... t)
+     static void doDispatch(std::function<void(T...)> &f, T const &... t)
      {
           f(t...);
      }
 };
 
+// A helper that removes a functor overload if type Functor
+// cannot be used as a functor with signature F
+template <class F, class Functor, class T>
+struct RequireFunctor : std::enable_if<std::is_constructible<std::function<F>, Functor>::value, T> {};
+
 // The Callback class is used as an envelope for the actual
 // callback object
 
-template <class Functor, class... T>
-class Callback : public CallbackBase
+template <class...> class Callback;	// too generic, remains undefined
+
+template <class R, class... T>
+class Callback<R(T...)> : public CallbackBase
 {
 public:
-     Callback(Functor f) : f_(f) {}
+     template<class FUNC>
+     Callback(FUNC &&f) : f_(std::forward<FUNC>(f)) {}
 
      virtual void invoke(Params const &p)
      {
-	     doInvoke(p, std::index_sequence_for<T...>{});
+          doInvoke(p, std::index_sequence_for<T...>{});
      }
 
 private:
      template<std::size_t... I>
      void doInvoke(Params const &p, std::index_sequence<I...>)
      {
-          Dispatch<result_type, Functor, T...>
+          Dispatch<R, T...>
                ::doDispatch(f_,
                     p.template get<T>(I+1)...);
      }
 
-     typedef typename CallbackTraits<Functor>::result_type result_type;
-     Functor f_;
+     std::function<R(T...)> f_;
 };
 
 std::string addLinkVar(int &i);
@@ -417,12 +406,12 @@ public:
 
 // operator- and operator<< are declared as friend functions of details::Expr
 
-// for defining callbacks
-template <class Functor> std::string callback(Functor f)
+// for defining callbacks (only function pointers)
+template <class R, class... T> std::string callback(R(*f)(T...))
 {
      return details::addCallback(
           std::shared_ptr<details::CallbackBase>(
-               new details::Callback<Functor>(f)));
+               new details::Callback<R(T...)>(f)));
 }
 
 // for deleting callbacks

@@ -1333,6 +1333,10 @@ void optionsTest()
 
      menu(".m") -menutype(menubar) -menutype(tearoff) -menutype(normal);
      CHECK("menu .m -type menubar -type tearoff -type normal");
+     menu(".m") -menutype(menubar) -menutype(tearoff) -menutype(normal)
+          -tearoffcommand([](const std::string& menu, const std::string& top){});
+     CHECK("menu .m -type menubar -type tearoff -type normal"
+           " -tearoffcommand CppTk::callback13");
      
      button(".b") -overrelief(raised);
      CHECK("button .b -overrelief raised");
@@ -1398,7 +1402,11 @@ void optionsTest()
      
      ".e" << configure() -validate(focus) -validatecommand(cbb0, valid_P);
      CHECK(".e configure -validate focus -validatecommand "
-          "{ CppTk::callback13 %P }");
+          "{ CppTk::callback14 %P }");
+      ".e" << configure() -validate(focus)
+          -validatecommand([](){ return true; });
+     CHECK(".e configure -validate focus -validatecommand "
+          "CppTk::callback15");
      
      button(".b") -width(10);
      CHECK("button .b -width 10");
@@ -1424,13 +1432,13 @@ void additionalTclTest()
      after(500);
      CHECK("after 500");
      after(500, cb0);
-     CHECK("after 500 CppTk::callback14");
+     CHECK("after 500 CppTk::callback16");
      after(500, std::string("bell"));
      CHECK("after 500 bell");
      after(cancel, std::string("someid"));
      CHECK("after cancel someid");
      afteridle(cb0);
-     CHECK("after idle CppTk::callback15");
+     CHECK("after idle CppTk::callback17");
      
      update();
      CHECK("update");
