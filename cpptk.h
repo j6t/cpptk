@@ -224,20 +224,19 @@ details::Expr wm(std::string const &option, std::string const &w,
 
 details::Expr wmprotocol(std::string const &w,
      std::string const &proto = std::string());
+details::Expr wmprotocol(std::string const &w,
+     std::string const &proto, std::string const &func);
 
 template <class Functor>
-details::Expr wmprotocol(std::string const &w,
+typename details::RequireFunctor<void(), Functor, details::Expr>::type
+wmprotocol(std::string const &w,
      std::string const &proto, Functor &&f)
 {
      std::string newCmd = details::addCallback(
           std::shared_ptr<details::CallbackBase>(
                new details::Callback<void()>(std::forward<Functor>(f))));
 
-     std::string str("wm protocol ");
-     str += w;          str += " ";
-     str += proto;      str += " { ";
-     str += newCmd;     str += " }";
-     return details::Expr(str);
+     return wmprotocol(w, proto, newCmd);
 }
 
 // widget commands
@@ -1184,6 +1183,8 @@ public:
      
      Expr operator()(std::string const &name,
           std::string const &seq) const;
+     Expr operator()(std::string const &name,
+          std::string const &seq, std::string const &func) const;
 
      template <class Functor, class... EventAttr>
      typename details::RequireFunctor<void(typename EventAttr::attrType...), Functor, details::Expr>::type

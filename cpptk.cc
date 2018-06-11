@@ -395,6 +395,16 @@ Expr Tk::wmprotocol(string const &w, string const &proto)
      return Expr(str);
 }
 
+Expr Tk::wmprotocol(std::string const &w,
+     std::string const &proto, std::string const &func)
+{
+     std::string str("wm protocol ");
+     str += w;      str += " ";
+     str += proto;  str += " { ";
+     str += func;   str += " }";
+     return Expr(str);
+}
+
 // widget commands
 
 Expr Tk::addtag(string const &tag, string const &spec)
@@ -1102,6 +1112,16 @@ Expr Tk::details::BindToken::operator()(string const &name,
      string str("bind ");
      str += name;   str += " ";
      str += seq;    str += " {}";
+     return Expr(str);
+}
+
+Expr Tk::details::BindToken::operator()(string const &name,
+     string const &seq, std::string const &func) const
+{
+     string str("bind ");
+     str += name;   str += " ";
+     str += seq;    str += " { ";
+     str += func;   str += " }";
      return Expr(str);
 }
 

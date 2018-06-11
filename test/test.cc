@@ -49,6 +49,8 @@ void commandsTest()
 
      bind(".f", "<Button-1>");
      CHECK("bind .f <Button-1> {}");
+     bind(".f", "<Button-1>", "bell");
+     CHECK("bind .f <Button-1> { bell }");
      bind(".f", "<Button-1>", cb0);
      CHECK("bind .f <Button-1> { CppTk::callback0 }");
      bind(".f", "<Button-1>", cb1, event_x);
