@@ -663,6 +663,21 @@ Expr Tk::sash(string const &option, int index)
      return Expr(str);
 }
 
+Expr Tk::sashpos(int index)
+{
+     string str("sashpos ");
+     str += toString(index);
+     return Expr(str);
+}
+
+Expr Tk::sashpos(int index, int pos)
+{
+     string str("sashpos ");
+     str += toString(index); str += " ";
+     str += toString(pos);
+     return Expr(str);
+}
+
 ExprWithPostfix Tk::search(string const &pattern,
      string const &indx1, string const &indx2)
 {

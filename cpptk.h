@@ -758,6 +758,9 @@ details::Expr sash(std::string const &option, int index,
      return details::Expr(str);
 }
 
+details::Expr sashpos(int index);
+details::Expr sashpos(int index, int pos);
+
 template <typename T1, typename T2>
 details::Expr scale(std::string const &item,
      T1 const &xorig, T2 const &yorig, double xscale, double yscale)

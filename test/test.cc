@@ -985,6 +985,10 @@ void widgetCommandsTest()
      CHECK(".pw sash mark 5 50 60");
      ".pw" << sash(place, 5, 50, 60);
      CHECK(".pw sash place 5 50 60");
+     ".pw" << sashpos(5);
+     CHECK(".pw sashpos 5");
+     ".pw" << sashpos(5, 60);
+     CHECK(".pw sashpos 5 60");
      
      ".c" << scale("item", 10, 20, 1.5, 1.6);
      CHECK(".c scale item 10 20 1.5 1.6000000000000001");
