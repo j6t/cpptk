@@ -363,7 +363,14 @@ public:
           str += (quote_ ? "\"" : "");
           return Expr(str);
      }
-     
+
+     Expr operator()() const
+     {
+          std::string str(" -");
+          str += name_;
+          return Expr(str);
+     }
+
 private:
      bool quote_;
 };

@@ -107,6 +107,8 @@ void commandsTest()
      CHECK("font create myfont");
      fonts(configure, "myfont") -size(20) -underline(true);
      CHECK("font configure myfont -size 20 -underline 1");
+     fonts(configure, "myfont") -size();
+     CHECK("font configure myfont -size");
      fonts(deletefont, "myfont");
      CHECK("font delete myfont");
      fonts(families);
