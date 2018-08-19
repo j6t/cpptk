@@ -407,6 +407,22 @@ public:
      ValidateAttr(std::string const &spec) : SubstAttr<T>(spec) {}
 };
 
+class VarProxy
+{
+public:
+     VarProxy(std::string name);
+
+     void operator=(int v);
+     void operator=(double v);
+     void operator=(std::string const& str);
+     operator int() const;
+     operator double() const;
+     operator std::string() const;
+
+private:
+     std::string name_;
+};
+
 } // namespace details
 
 // basic operations for Tk expressions
@@ -469,6 +485,11 @@ inline namespace literals {
      std::string operator"" _tcls(const char *str, std::size_t len);
      int operator"" _tcli(const char *str, std::size_t len);
      double operator"" _tcld(const char *str, std::size_t len);
+
+     details::VarProxy operator"" _tclv(const char *str, std::size_t len);
+     std::string operator"" _tclvs(const char *str, std::size_t len);
+     int operator"" _tclvi(const char *str, std::size_t len);
+     double operator"" _tclvd(const char *str, std::size_t len);
 } // namespace literals
 
 // for initializing Tcl environment

@@ -656,6 +656,41 @@ Expr Tk::eval(string const &str)
      return Expr(str);
 }
 
+details::VarProxy::VarProxy(std::string name) :
+	name_(std::move(name))
+{
+}
+
+void details::VarProxy::operator=(int v)
+{
+	eval("set "s + name_ + " "s + toString(v));
+}
+
+void details::VarProxy::operator=(double v)
+{
+	eval("set "s + name_ + " "s + toString(v));
+}
+
+void details::VarProxy::operator=(std::string const& str)
+{
+	eval("set "s + name_ + " \""s + details::quote(str) + "\""s);
+}
+
+details::VarProxy::operator std::string() const
+{
+	return eval("expr {$"s + name_ + '}');
+}
+
+details::VarProxy::operator int() const
+{
+	return int(eval("expr {$"s + name_ + '}'));
+}
+
+details::VarProxy::operator double() const
+{
+	return double(eval("expr {$"s + name_ + '}'));
+}
+
 details::Expr Tk::literals::operator"" _tcl(const char *str, std::size_t len)
 {
 	return eval(std::string(str, len));
@@ -674,6 +709,26 @@ int Tk::literals::operator"" _tcli(const char *str, std::size_t len)
 double Tk::literals::operator"" _tcld(const char *str, std::size_t len)
 {
 	return double(eval(std::string(str, len)));
+}
+
+details::VarProxy Tk::literals::operator"" _tclv(const char *str, std::size_t len)
+{
+	return details::VarProxy(std::string(str, len));
+}
+
+std::string Tk::literals::operator"" _tclvs(const char *str, std::size_t len)
+{
+	return details::VarProxy(std::string(str, len));
+}
+
+int Tk::literals::operator"" _tclvi(const char *str, std::size_t len)
+{
+	return details::VarProxy(std::string(str, len));
+}
+
+double Tk::literals::operator"" _tclvd(const char *str, std::size_t len)
+{
+	return details::VarProxy(std::string(str, len));
 }
 
 void Tk::init(const char *argv0)
