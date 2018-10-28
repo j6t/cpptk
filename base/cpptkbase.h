@@ -232,8 +232,9 @@ private:
 };
 
 // available specializations for Params::get
-template <> int         Params::get<int>(int argno) const;
+template <> int Params::get<int>(int argno) const;
 template <> std::string Params::get<std::string>(int argno) const;
+template <> std::vector<std::string> Params::get<std::vector<std::string>>(int argno) const;
 
 
 // The CallbackBase is used to store callback handlers

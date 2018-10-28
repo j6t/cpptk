@@ -560,7 +560,7 @@ void details::ExprWithPostfix::invokeOnce()
      Result::invokeOnce();
 }
 
-// these two specializations are used to extract parameter
+// these specializations are used to extract parameters
 // with the requested type
 
 template <>
@@ -594,6 +594,23 @@ string details::Params::get<string>(int argno) const
      Tcl_Obj *CONST *objv = reinterpret_cast<Tcl_Obj *CONST *>(objv_);
      
      string res = Tcl_GetString(objv[argno]);
+     return res;
+}
+
+// extract all parameters (including none) beginning at argno
+template <>
+vector<string> details::Params::get<vector<string>>(int argno) const
+{
+     if (argno < 1 || argno > argc_)	// argno == argc_ is allowed
+     {
+          throw TkError("Parameter number out of valid range");
+     }
+
+     Tcl_Obj *CONST *objv = reinterpret_cast<Tcl_Obj *CONST *>(objv_);
+
+     vector<string> res(argc_ - argno);
+     for (auto& s: res)
+          s = Tcl_GetString(objv[argno++]);
      return res;
 }
 

@@ -1497,6 +1497,19 @@ public:
           return Expr(str);
      }
 
+     template <class Functor>
+     typename RequireFunctor<void(std::vector<std::string>),Functor, Expr>::type
+     operator()(Functor &&f) const
+     {
+          std::string newCmd = addCallback(
+               std::shared_ptr<CallbackBase>(
+                    new Callback<void(std::vector<std::string>)>(std::forward<Functor>(f))));
+
+          std::string str(" -command ");
+          str += newCmd;
+          return Expr(str);
+     }
+
      Expr operator()(std::string const &name) const;
      Expr operator()(CallbackHandle const &handle) const;
 };
