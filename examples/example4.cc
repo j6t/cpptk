@@ -67,9 +67,14 @@ int main(int, char *argv[])
           
           // create the text widget with its scrollbar
           
-          textw(".t") -background("white") -yscrollcommand(".s set");
-          scrollbar(".s") -command(string(".t yview"));
+          textw(".t") -background("white") -wrap(none)
+               -xscrollcommand(".sx set")
+               -yscrollcommand(".s set");
+          scrollbar(".s") -command([](const vector<string>& cmd) { ".t" << yview(cmd); });
+          scrollbar(".sx") -orient(horizontal)
+               -command([](const vector<string>& cmd) { ".t" << xview(cmd); });
           pack(".s") -side(Tk::right) -Tk::fill(y);
+          pack(".sx") -side(Tk::bottom) -Tk::fill(x);
           pack(".t") -expand(true) -Tk::fill(both);
           
           runEventLoop();

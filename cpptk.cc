@@ -826,6 +826,16 @@ Expr Tk::xview(string const option, int number, string const &what)
      return Expr(str);
 }
 
+Expr Tk::xview(vector<string> const &cmd)
+{
+     string str("xview");
+     for (auto const& c: cmd) {
+          str += " ";
+          str += c;
+     }
+     return Expr(str);
+}
+
 Expr Tk::yview()
 {
      return Expr("yview");
@@ -845,6 +855,16 @@ Expr Tk::yview(string const option, int number, string const &what)
      str += option; str += " ";
      str += toString(number); str += " ";
      str += what;
+     return Expr(str);
+}
+
+Expr Tk::yview(vector<string> const &cmd)
+{
+     string str("yview");
+     for (auto const& c: cmd) {
+          str += " ";
+          str += c;
+     }
      return Expr(str);
 }
 

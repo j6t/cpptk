@@ -1196,15 +1196,15 @@ void widgetCommandsTest()
      
      std::pair<double, double>(".c" << xview());
      CHECK(".c xview");
-     ".e" << xview(5);
-     CHECK(".e xview 5");
      ".c" << xview(moveto, 0.5);
      CHECK(".c xview moveto 0.5");
      ".c" << xview(scroll, 5, units);
      CHECK(".c xview scroll 5 units");
      ".c" << xview(scroll, 5, pages);
      CHECK(".c xview scroll 5 pages");
-     
+     ".c" << xview(std::vector<std::string>{"scroll", "1", "units"});
+     CHECK(".c xview scroll 1 units");
+
      ".m" << yposition(5);
      CHECK(".m yposition 5");
 
@@ -1216,7 +1216,8 @@ void widgetCommandsTest()
      CHECK(".c yview scroll 5 units");
      ".c" << yview(scroll, 5, pages);
      CHECK(".c yview scroll 5 pages");
-     
+     ".c" << yview(std::vector<std::string>{"scroll", "1", "units"});
+     CHECK(".c yview scroll 1 units");
 
      std::cout << "widget commands test OK\n";
 }

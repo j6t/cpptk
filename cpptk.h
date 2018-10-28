@@ -897,17 +897,10 @@ details::Expr windows(std::string const &option,
 details::Expr write(std::string const &file);
 
 details::Expr xview();
-
-template <typename T>
-details::Expr xview(T const &t)
-{
-     std::string str("xview ");
-     str += details::toString(t);
-     return details::Expr(str);
-}
 details::Expr xview(std::string const &option, double fraction);
 details::Expr xview(std::string const option,
      int number, std::string const &what);
+details::Expr xview(std::vector<std::string> const &cmd);
 
 template <typename T>
 details::Expr yposition(T const &index)
@@ -921,6 +914,7 @@ details::Expr yview();
 details::Expr yview(std::string const &option, double fraction);
 details::Expr yview(std::string const option,
      int number, std::string const &what);
+details::Expr yview(std::vector<std::string> const &cmd);
 
 // options
 
