@@ -236,6 +236,16 @@ template <> int Params::get<int>(int argno) const;
 template <> std::string Params::get<std::string>(int argno) const;
 template <> std::vector<std::string> Params::get<std::vector<std::string>>(int argno) const;
 
+// The Completion enumeration can be used by callback functions
+// to report a particular completion to the Tcl interpreter.
+
+enum class Completion : int {
+     Ok         = 0,    // TCL_OK
+     Error      = 1,    // TCL_ERROR
+     Return     = 2,    // TCL_RETURN
+     Break      = 3,    // TCL_BREAK
+     Continue   = 4,    // TCL_CONTINUE
+};
 
 // The CallbackBase is used to store callback handlers
 // in the polymorphic map
@@ -244,7 +254,7 @@ class CallbackBase
 {
 public:
      virtual ~CallbackBase() {}
-     virtual void invoke(Params const &) = 0;
+     virtual Completion invoke(Params const &) = 0;
 };
 
 std::string addCallback(std::shared_ptr<CallbackBase> cb);
@@ -261,10 +271,11 @@ void setResult(std::string const &s);
 template <typename R, class... T>
 struct Dispatch
 {
-     static void doDispatch(std::function<R(T...)> &f, T const &... t)
+     static Completion doDispatch(std::function<R(T...)> &f, T const &... t)
      {
           R result = f(t...);
           setResult(result);
+          return Completion::Ok;
      }
 };
 
@@ -272,9 +283,20 @@ struct Dispatch
 template <class... T>
 struct Dispatch<void, T...>
 {
-     static void doDispatch(std::function<void(T...)> &f, T const &... t)
+     static Completion doDispatch(std::function<void(T...)> &f, T const &... t)
      {
           f(t...);
+          return Completion::Ok;
+     }
+};
+
+// partial specialization for functors that return a particular completion code
+template <class... T>
+struct Dispatch<Completion, T...>
+{
+     static Completion doDispatch(std::function<Completion(T...)> &f, T const &... t)
+     {
+          return f(t...);
      }
 };
 
@@ -295,18 +317,16 @@ public:
      template<class FUNC>
      Callback(FUNC &&f) : f_(std::forward<FUNC>(f)) {}
 
-     virtual void invoke(Params const &p)
+     virtual Completion invoke(Params const &p)
      {
-          doInvoke(p, std::index_sequence_for<T...>{});
+          return doInvoke(p, std::index_sequence_for<T...>{});
      }
 
 private:
      template<std::size_t... I>
-     void doInvoke(Params const &p, std::index_sequence<I...>)
+     Completion doInvoke(Params const &p, std::index_sequence<I...>)
      {
-          Dispatch<R, T...>
-               ::doDispatch(f_,
-                    p.template get<T>(I+1)...);
+          return Dispatch<R, T...>::doDispatch(f_, p.template get<T>(I+1)...);
      }
 
      std::function<R(T...)> f_;
@@ -492,6 +512,10 @@ inline namespace literals {
      int operator"" _tclvi(const char *str, std::size_t len);
      double operator"" _tclvd(const char *str, std::size_t len);
 } // namespace literals
+
+constexpr details::Completion Return = details::Completion::Return;
+constexpr details::Completion Break = details::Completion::Break;
+constexpr details::Completion Continue = details::Completion::Continue;
 
 // for initializing Tcl environment
 void init(const char *argv0);

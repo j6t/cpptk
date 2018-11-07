@@ -203,17 +203,18 @@ int callbackHandler(ClientData cd, Tcl_Interp *interp,
           
           Params p(objc, reinterpret_cast<void*>(
                const_cast<Tcl_Obj **>(objv)));
-          it->second->invoke(p);
+          auto res = it->second->invoke(p);
           
           // refresh Tcl variables
           linkCpptoTcl();
+
+          return int(res);
      }
      catch (std::exception const &e)
      {
           Tcl_SetResult(interp, const_cast<char*>(e.what()), TCL_VOLATILE);
-          return TCL_ERROR;
      }
-     return TCL_OK;
+     return TCL_ERROR;
 }
 
 // generic callback deleter

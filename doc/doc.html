@@ -2136,6 +2136,11 @@ method is used to retrieve the callback name.<br>
       <br>
     </li>
   </ul>
+Callbacks can be defined to return values of type <code>Completion</code>.
+The predefined values are <code>Return</code>, <code>Break</code>,
+and <code>Continue</code>. These are equivalent to Tcl callbacks that end
+with <code>return</code>, <code>break</code>, or <code>continue</code>.<br>
+    <br>
   <li>Conversions.<br>
 A C++/Tk expression, after execution, can leave some result in the
 interpreter. This result can be retrieved by converting the whole
