@@ -1193,7 +1193,28 @@ public:
                std::shared_ptr<CallbackBase>(
                     new Callback<void(
                          typename EventAttr::attrType...)>(std::forward<Functor>(f))));
-     
+          return makeBindExpr(name, seq, newCmd, ea...);
+     }
+
+     template <class Functor, class... EventAttr>
+     typename details::RequireFunctor<Completion(typename EventAttr::attrType...), Functor, details::Expr>::type
+     operator()(std::string const &name,
+          std::string const &seq, Functor &&f,
+          EventAttr const &... ea) const
+     {
+          std::string newCmd = addCallback(
+               std::shared_ptr<CallbackBase>(
+                    new Callback<Completion(
+                         typename EventAttr::attrType...)>(std::forward<Functor>(f))));
+          return makeBindExpr(name, seq, newCmd, ea...);
+     }
+
+private:
+     template <class... EventAttr>
+     details::Expr makeBindExpr(std::string const &name,
+          std::string const &seq, std::string const &newCmd,
+          EventAttr const &... ea) const
+     {
           std::string str("bind ");
           str += name;       str += " ";
           str += seq;        str += " { ";

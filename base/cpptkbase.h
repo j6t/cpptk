@@ -302,8 +302,17 @@ struct Dispatch<Completion, T...>
 
 // A helper that removes a functor overload if type Functor
 // cannot be used as a functor with signature F
+template <class Functor, class R, class... Args>
+constexpr bool IsFunctor() {
+     if constexpr (std::is_constructible_v<std::function<R(Args...)>, Functor>)
+          return std::is_same_v<R, decltype(std::declval<Functor>()(std::declval<Args const&>()...))>;
+     else
+          return false;
+}
 template <class F, class Functor, class T>
-struct RequireFunctor : std::enable_if<std::is_constructible<std::function<F>, Functor>::value, T> {};
+struct RequireFunctor {};
+template <class Functor, class T, class R, class... Args>
+struct RequireFunctor<R(Args...), Functor, T> : std::enable_if<IsFunctor<Functor, R, Args...>(), T> {};
 
 // The Callback class is used as an envelope for the actual
 // callback object

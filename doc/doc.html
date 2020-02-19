@@ -2232,7 +2232,7 @@ and are used in tests that accompany the library.<br>
 On Unix-like systems, the following command is enough to compile a
 one-file C++/Tk program (shown for FreeBSD):<br>
 <br>
-<code>$ g++ -std=c++14 myprog.cc cpptk.cc base/cpptkbase.cc -o myprog
+<code>$ g++ -std=c++17 myprog.cc cpptk.cc base/cpptkbase.cc -o myprog
 -I/usr/local/include/tcl8.6
 -I/usr/local/include/tk8.6 -I/usr/X11R6/include
 -I/usr/local/include/boost_1_61_0 -L/usr/local/lib -ltcl8.6 -ltk8.6
@@ -2241,7 +2241,7 @@ one-file C++/Tk program (shown for FreeBSD):<br>
 Depending on the specific Unix system, it may be necessary to use
 different search paths or threading option (<code>-lpthread</code> is
 typical on Linux, but may not be needed at all).<br>
-Note also that a C++ compiler is necessary that supports C++14.<br>
+Note also that a C++ compiler is necessary that supports C++17.<br>
 <br>
 <br>
 <ol>
